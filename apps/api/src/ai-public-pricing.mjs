@@ -25,10 +25,10 @@ function quoteCapabilities(normalized) {
 }
 
 const aliasModels = Object.freeze({
-  'clervo/fast': Object.freeze(['gpt-5.6-luna', 'openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']),
-  'clervo/smart': Object.freeze(['gpt-5.6-terra', 'openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/nvidia/nemotron-3-120b-a12b']),
-  'clervo/code': Object.freeze(['gpt-5.6-sol', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']),
-  'clervo/deep': Object.freeze(['gpt-5.6-sol', 'openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/openai/gpt-oss-120b']),
+  'clervo/fast': Object.freeze(['openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']),
+  'clervo/smart': Object.freeze(['openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/nvidia/nemotron-3-120b-a12b']),
+  'clervo/code': Object.freeze(['openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']),
+  'clervo/deep': Object.freeze(['openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/openai/gpt-oss-120b']),
 });
 
 function micros(value, code) {

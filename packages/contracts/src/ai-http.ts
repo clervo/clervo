@@ -42,6 +42,7 @@ export interface NormalizedAiHttpRequest {
 export interface PublicAiExecutionResult {
   requestedModel: string;
   exactModelId: string;
+  executedModelId?: string;
   completedAt: string;
   usage: AiExecutionResult['usage'];
   output: AiExecutionResult['output'];
@@ -92,9 +93,16 @@ function byteLength(values: readonly string[]): number {
 }
 
 function chatContentBytes(input: Extract<AiExecutionInput, { kind: 'chat' }>): number {
-  return input.messages.reduce((total, { content }) => total + (typeof content === 'string'
-    ? byteLength([content])
-    : byteLength(content.flatMap((part) => part.type === 'text' ? [part.text] : [part.image_url.url]))), 0);
+  const messages = input.messages.reduce((total, { content, toolCalls, toolCallId, name }) => total
+    + (content === null ? 0 : typeof content === 'string'
+      ? byteLength([content])
+      : byteLength(content.flatMap((part) => part.type === 'text' ? [part.text] : [part.image_url.url])))
+    + byteLength([toolCallId ?? '', name ?? '', toolCalls === undefined ? '' : JSON.stringify(toolCalls)]), 0);
+  return messages + byteLength([
+    input.tools === undefined ? '' : JSON.stringify(input.tools),
+    input.toolChoice === undefined ? '' : JSON.stringify(input.toolChoice),
+    input.jsonSchema === undefined ? '' : JSON.stringify(input.jsonSchema),
+  ]);
 }
 
 function usageBounds(input: AiExecutionInput, maximumOutputTokens: number | undefined, maximumReasoningTokens: number | undefined): AiUsageBounds {
@@ -193,6 +201,7 @@ export function createAiHttpResult(input: {
   const result = Object.freeze({
     requestedModel: input.result.requestedModel,
     exactModelId: input.result.exactModelId,
+    ...(input.result.executedModelId === undefined ? {} : { executedModelId: input.result.executedModelId }),
     completedAt: input.result.completedAt,
     usage: input.result.usage,
     output: input.result.output,
@@ -238,6 +247,7 @@ export function createAiFreeHttpResult(input: {
     result: Object.freeze({
       requestedModel: input.result.requestedModel,
       exactModelId: input.result.exactModelId,
+      ...(input.result.executedModelId === undefined ? {} : { executedModelId: input.result.executedModelId }),
       completedAt: input.result.completedAt,
       usage: input.result.usage,
       output: input.result.output,

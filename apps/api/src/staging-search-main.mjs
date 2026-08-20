@@ -17,6 +17,7 @@ import { createSandboxPrivateGateway } from './sandbox-private-gateway.mjs';
 import { createPostgresSandboxOperationStoreFromEnvironment } from './sandbox-operation-store.mjs';
 import { createAiProductionRuntime } from './ai-production-runtime.mjs';
 import { createAiArtifactRuntime } from './ai-artifact-runtime.mjs';
+import { AiSupplierHealthRegistry } from './ai-supplier-health.mjs';
 import { createRpcProductionRuntime } from './rpc-production-runtime.mjs';
 import { createPredictionProductionRuntime } from './prediction-production-runtime.mjs';
 import { createPostgresPredictionMarketStoreFromEnvironment } from './prediction-market-store.mjs';
@@ -106,12 +107,8 @@ const executor = searchMode === 'open_federation'
     }) : createRecordedSearchExecutor();
 const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
 const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
-const aiSupplierCircuit = new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 });
-const containAiAdapter = (adapter) => Object.freeze({
-  ...adapter,
-  routeId: adapter.routeId,
-  execute: (input) => aiSupplierCircuit.execute(`ai:${input.exactModelId}`, () => adapter.execute(input)),
-});
+const aiSupplierHealth = new AiSupplierHealthRegistry();
+const containAiAdapter = (adapter) => aiSupplierHealth.contain(adapter);
 const containedAiAdapters = aiRuntime?.adapters.map(containAiAdapter);
 const containedAiAdapterFactory = aiRuntime?.adapterFactory === undefined
   ? undefined
@@ -169,6 +166,7 @@ const server = createSearchServer({
   aiAdapterFactory: containedAiAdapterFactory,
   aiRuntimeBindings: aiRuntime?.runtimeBindings,
   aiReady: aiRuntime?.ready,
+  aiOperationalHealth: () => aiSupplierHealth.snapshot(),
   aiFreeTier,
   aiArtifactAccess: aiArtifactRuntime,
   sandboxPublicRunnerDigest: sandboxPublicMode === 'paid' ? process.env.CLERVO_SANDBOX_RUNNER_DIGEST : undefined,

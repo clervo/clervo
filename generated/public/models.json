@@ -91,10 +91,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -150,10 +151,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -209,10 +211,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -268,10 +271,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -327,10 +331,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -386,10 +391,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -445,10 +451,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -480,16 +487,18 @@
       "clervo": {
         "identityKind": "alias",
         "aliases": [],
-        "aliasFor": "clervo/gpt-5.6-sol",
+        "aliasFor": "clervo/kimi-k2.7-code",
         "reasoningEffort": "medium",
         "name": "clervo/code service alias",
-        "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
+        "description": "Stable Clervo service alias for clervo/kimi-k2.7-code. Canonical requests are never silently substituted.",
         "productIds": [
           "ai.chat"
         ],
         "capabilities": [
+          "parallel_tool_calling",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -513,17 +522,17 @@
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
-          "inputTokenMicrosPerMillion": 2500000,
-          "cachedInputTokenMicrosPerMillion": 2500000,
-          "outputTokenMicrosPerMillion": 15000000,
-          "reasoningTokenMicrosPerMillion": 15000000,
+          "inputTokenMicrosPerMillion": 525000,
+          "cachedInputTokenMicrosPerMillion": 525000,
+          "outputTokenMicrosPerMillion": 2625000,
+          "reasoningTokenMicrosPerMillion": 2625000,
           "imageMicrosEach": 0,
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
           "virtualTryOnMicrosPerImage": 0,
-          "inputPerMToken": "2.500000",
-          "outputPerMToken": "15.000000"
+          "inputPerMToken": "0.525000",
+          "outputPerMToken": "2.625000"
         },
         "billingMode": "metered",
         "commerce": {
@@ -541,16 +550,21 @@
       "clervo": {
         "identityKind": "alias",
         "aliases": [],
-        "aliasFor": "clervo/gpt-5.6-sol",
+        "aliasFor": "clervo/gpt-oss-120b",
         "reasoningEffort": "high",
         "name": "clervo/deep service alias",
-        "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
+        "description": "Stable Clervo service alias for clervo/gpt-oss-120b. Canonical requests are never silently substituted.",
         "productIds": [
           "ai.chat"
         ],
         "capabilities": [
+          "reasoning",
+          "streaming",
+          "strict_schema",
+          "structured_output",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -574,17 +588,17 @@
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
-          "inputTokenMicrosPerMillion": 2500000,
-          "cachedInputTokenMicrosPerMillion": 2500000,
-          "outputTokenMicrosPerMillion": 15000000,
-          "reasoningTokenMicrosPerMillion": 15000000,
+          "inputTokenMicrosPerMillion": 33300,
+          "cachedInputTokenMicrosPerMillion": 33300,
+          "outputTokenMicrosPerMillion": 153000,
+          "reasoningTokenMicrosPerMillion": 153000,
           "imageMicrosEach": 0,
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
           "virtualTryOnMicrosPerImage": 0,
-          "inputPerMToken": "2.500000",
-          "outputPerMToken": "15.000000"
+          "inputPerMToken": "0.033300",
+          "outputPerMToken": "0.153000"
         },
         "billingMode": "metered",
         "commerce": {
@@ -898,16 +912,21 @@
       "clervo": {
         "identityKind": "alias",
         "aliases": [],
-        "aliasFor": "clervo/gpt-5.6-luna",
+        "aliasFor": "clervo/gpt-oss-20b",
         "reasoningEffort": "low",
         "name": "clervo/fast service alias",
-        "description": "Stable Clervo service alias for clervo/gpt-5.6-luna. Canonical requests are never silently substituted.",
+        "description": "Stable Clervo service alias for clervo/gpt-oss-20b. Canonical requests are never silently substituted.",
         "productIds": [
           "ai.chat"
         ],
         "capabilities": [
+          "reasoning",
+          "streaming",
+          "strict_schema",
+          "structured_output",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -931,23 +950,23 @@
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
-          "inputTokenMicrosPerMillion": 50000,
-          "cachedInputTokenMicrosPerMillion": 50000,
-          "outputTokenMicrosPerMillion": 300000,
-          "reasoningTokenMicrosPerMillion": 300000,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
           "imageMicrosEach": 0,
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
           "virtualTryOnMicrosPerImage": 0,
-          "inputPerMToken": "0.050000",
-          "outputPerMToken": "0.300000"
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
-        "billingMode": "metered",
+        "billingMode": "free",
         "commerce": {
           "executionPath": "/v1/ai/execute",
-          "payment": "x402_or_mpp",
-          "resultAccounting": "usage_and_settled_receipt",
+          "payment": "none",
+          "resultAccounting": "usage",
           "replaySafe": true
         }
       }
@@ -1961,9 +1980,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "canonical",
-        "aliases": [
-          "clervo/fast"
-        ],
+        "aliases": [],
         "name": "Gpt 5.6 Luna",
         "description": "Gpt 5.6 Luna through Clervo's normalized chat contract.",
         "productIds": [
@@ -1988,10 +2005,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2022,10 +2040,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "canonical",
-        "aliases": [
-          "clervo/code",
-          "clervo/deep"
-        ],
+        "aliases": [],
         "name": "Gpt 5.6 Sol",
         "description": "Gpt 5.6 Sol through Clervo's normalized chat contract.",
         "productIds": [
@@ -2050,10 +2065,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2084,9 +2100,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "canonical",
-        "aliases": [
-          "clervo/smart"
-        ],
+        "aliases": [],
         "name": "Gpt 5.6 Terra",
         "description": "Gpt 5.6 Terra through Clervo's normalized chat contract.",
         "productIds": [
@@ -2111,10 +2125,11 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
+        "lifecycle": "paused",
+        "availability": "unavailable",
+        "health": "unavailable",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2145,7 +2160,10 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "canonical",
-        "aliases": [],
+        "aliases": [
+          "clervo/deep",
+          "clervo/smart"
+        ],
         "name": "Gpt Oss 120b",
         "description": "Gpt Oss 120b through Clervo's normalized chat contract.",
         "productIds": [
@@ -2153,8 +2171,12 @@
         ],
         "capabilities": [
           "reasoning",
+          "streaming",
+          "strict_schema",
+          "structured_output",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -2205,7 +2227,9 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "canonical",
-        "aliases": [],
+        "aliases": [
+          "clervo/fast"
+        ],
         "name": "Gpt Oss 20b",
         "description": "Gpt Oss 20b through Clervo's normalized chat contract.",
         "productIds": [
@@ -2213,8 +2237,12 @@
         ],
         "capabilities": [
           "reasoning",
+          "streaming",
+          "strict_schema",
+          "structured_output",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -2231,11 +2259,10 @@
         ],
         "limits": {},
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
-        "lifecycle": "degraded",
-        "availability": "degraded",
-        "health": "degraded",
-        "publicSellable": false,
-        "availabilityReason": "temporarily_unavailable",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2561,15 +2588,19 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "canonical",
-        "aliases": [],
+        "aliases": [
+          "clervo/code"
+        ],
         "name": "Kimi K2.7 Code",
         "description": "Kimi K2.7 Code through Clervo's normalized chat contract.",
         "productIds": [
           "ai.chat"
         ],
         "capabilities": [
+          "parallel_tool_calling",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -4839,16 +4870,21 @@
       "clervo": {
         "identityKind": "alias",
         "aliases": [],
-        "aliasFor": "clervo/gpt-5.6-terra",
+        "aliasFor": "clervo/gpt-oss-120b",
         "reasoningEffort": "medium",
         "name": "clervo/smart service alias",
-        "description": "Stable Clervo service alias for clervo/gpt-5.6-terra. Canonical requests are never silently substituted.",
+        "description": "Stable Clervo service alias for clervo/gpt-oss-120b. Canonical requests are never silently substituted.",
         "productIds": [
           "ai.chat"
         ],
         "capabilities": [
+          "reasoning",
+          "streaming",
+          "strict_schema",
+          "structured_output",
           "text_input",
-          "text_output"
+          "text_output",
+          "tool_calling"
         ],
         "inputTypes": [
           "text"
@@ -4872,17 +4908,17 @@
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
-          "inputTokenMicrosPerMillion": 500000,
-          "cachedInputTokenMicrosPerMillion": 500000,
-          "outputTokenMicrosPerMillion": 3000000,
-          "reasoningTokenMicrosPerMillion": 3000000,
+          "inputTokenMicrosPerMillion": 33300,
+          "cachedInputTokenMicrosPerMillion": 33300,
+          "outputTokenMicrosPerMillion": 153000,
+          "reasoningTokenMicrosPerMillion": 153000,
           "imageMicrosEach": 0,
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
           "virtualTryOnMicrosPerImage": 0,
-          "inputPerMToken": "0.500000",
-          "outputPerMToken": "3.000000"
+          "inputPerMToken": "0.033300",
+          "outputPerMToken": "0.153000"
         },
         "billingMode": "metered",
         "commerce": {
@@ -5308,8 +5344,8 @@
     }
   ],
   "clervo": {
-    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
-    "composedAt": "2026-08-11T20:20:35.624Z",
+    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_729c7f02820d01a81a360f8c:pricing:2026-08-09:dynamic-v1",
+    "composedAt": "2026-08-20T06:30:42.031Z",
     "sourceValidUntil": "2026-09-09T19:09:36.000Z",
     "inventory": {
       "canonicalModels": 85,

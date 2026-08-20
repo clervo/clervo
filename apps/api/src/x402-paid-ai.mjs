@@ -19,7 +19,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, resourcePath = '/v1/ai/execute', discovery, deadlineAt, signal }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, resourcePath = '/v1/ai/execute', discovery, deadlineAt, signal, onEvent }) {
       let prepared;
       return processor.process({
         idempotencyKey,
@@ -64,6 +64,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             signal,
             ...(deadlineAt === undefined ? { clock: () => Date.parse(now) } : {}),
             monitor,
+            ...(onEvent === undefined ? {} : { onEvent }),
           });
           if (outcome.outcome !== 'completed') refuse(`ai_execution_${outcome.failureCode}`);
           return Object.freeze({

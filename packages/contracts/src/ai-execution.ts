@@ -19,8 +19,55 @@ export type AiChatMessageContent = string | readonly (
   | { type: 'image_url'; image_url: { url: string } }
 )[];
 
+export interface AiToolCall {
+  id: string;
+  type: 'function';
+  function: { name: string; arguments: string };
+}
+
+export interface AiToolDefinition {
+  type: 'function';
+  function: {
+    name: string;
+    description?: string;
+    parameters: JsonValue;
+    strict?: boolean;
+  };
+}
+
+export type AiToolChoice = 'auto' | 'none' | 'required' | {
+  type: 'function';
+  function: { name: string };
+};
+
+export interface AiJsonSchemaFormat {
+  name: string;
+  description?: string;
+  schema: JsonValue;
+  strict: true;
+}
+
+export interface AiChatMessage {
+  role: 'system' | 'user' | 'assistant' | 'tool';
+  content: AiChatMessageContent | null;
+  name?: string;
+  toolCallId?: string;
+  toolCalls?: readonly AiToolCall[];
+}
+
 export type AiExecutionInput =
-  | { kind: 'chat'; messages: readonly { role: 'system' | 'user' | 'assistant' | 'tool'; content: AiChatMessageContent }[]; responseFormat: 'text' | 'json_object'; stream: boolean; evidence?: readonly AiEvidenceItem[] }
+  | {
+      kind: 'chat';
+      messages: readonly AiChatMessage[];
+      responseFormat: 'text' | 'json_object' | 'json_schema';
+      jsonSchema?: AiJsonSchemaFormat;
+      tools?: readonly AiToolDefinition[];
+      toolChoice?: AiToolChoice;
+      parallelToolCalls?: boolean;
+      reasoningEffort?: 'none' | 'low' | 'medium' | 'high';
+      stream: boolean;
+      evidence?: readonly AiEvidenceItem[];
+    }
   | { kind: 'embedding'; inputs: readonly string[]; dimensions?: number }
   | { kind: 'image'; prompt: string; size: '1024x1024' | '1024x1536' | '1536x1024'; quality: 'low' | 'medium' | 'high'; count: number }
   | { kind: 'speech'; input: string; voice: string; responseFormat: 'mp3' | 'opus' | 'aac' | 'flac' | 'wav' | 'pcm' }
@@ -43,7 +90,7 @@ export interface AiExecutionRequest {
 export interface AiUsage extends AiUsageBounds {}
 
 export type AiExecutionOutput =
-  | { kind: 'chat'; content: string; finishReason: 'stop' | 'length' | 'tool_calls'; claims?: readonly { text: string; citationIds: readonly string[] }[] }
+  | { kind: 'chat'; content: string; finishReason: 'stop' | 'length' | 'tool_calls'; toolCalls?: readonly AiToolCall[]; structured?: JsonValue; claims?: readonly { text: string; citationIds: readonly string[] }[] }
   | { kind: 'embedding'; vectors: readonly { index: number; embedding: readonly number[] }[] }
   | { kind: 'image'; artifacts: readonly { artifactUri: string; sha256: string; mimeType: 'image/png' | 'image/jpeg' | 'image/webp'; width: number; height: number }[] }
   | { kind: 'speech'; artifact: { artifactUri: string; sha256: string; mimeType: 'audio/mpeg' | 'audio/ogg' | 'audio/aac' | 'audio/flac' | 'audio/wav' | 'audio/pcm'; bytes: number } }
@@ -61,6 +108,7 @@ export interface AiExecutionResult {
   routeId: string;
   providerId: string;
   exactModelId: string;
+  executedModelId?: string;
   completedAt: string;
   usage: AiUsage;
   supplierCost: AssetAmount;
@@ -122,6 +170,27 @@ function assertEvidence(items: readonly AiEvidenceItem[]): void {
   }
 }
 
+function boundedJson(value: unknown, code: string, maximum = 100_000): void {
+  let encoded: string;
+  try { encoded = JSON.stringify(value); } catch { throw new TypeError(code); }
+  if (encoded === undefined || encoded.length === 0 || encoded.length > maximum) throw new TypeError(code);
+}
+
+function toolName(value: string): void {
+  if (!/^[A-Za-z_][A-Za-z0-9_-]{0,63}$/u.test(value)) throw new TypeError('ai_execution_tool_name_invalid');
+}
+
+function assertToolCall(value: AiToolCall): void {
+  if (value === null || typeof value !== 'object' || value.type !== 'function') throw new TypeError('ai_execution_tool_call_invalid');
+  if (!/^[A-Za-z0-9_-]{1,128}$/u.test(value.id)) throw new TypeError('ai_execution_tool_call_id_invalid');
+  toolName(value.function?.name);
+  if (typeof value.function?.arguments !== 'string' || value.function.arguments.length > 100_000) throw new TypeError('ai_execution_tool_arguments_invalid');
+  try {
+    const parsed = JSON.parse(value.function.arguments);
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) throw new TypeError('invalid');
+  } catch { throw new TypeError('ai_execution_tool_arguments_invalid'); }
+}
+
 export function assertAiExecutionRequest(value: AiExecutionRequest): void {
   if (value.contractVersion !== CONTRACT_VERSION || value.schemaVersion !== AI_EXECUTION_REQUEST_SCHEMA_VERSION || !aiProductIds.includes(value.productId)) throw new TypeError('ai_execution_request_version_invalid');
   if (!/^op_[A-Za-z0-9]{20,64}$/u.test(value.operationId)) throw new TypeError('ai_execution_operation_id_invalid');
@@ -131,9 +200,51 @@ export function assertAiExecutionRequest(value: AiExecutionRequest): void {
   amount(value.maximumSupplierCost, 'maximum_cost');
   if (productKind[value.productId] !== value.input.kind) throw new TypeError('ai_execution_product_input_mismatch');
   if (value.input.kind === 'chat') {
-    if (value.input.messages.length === 0 || value.input.messages.length > 128 || !['text', 'json_object'].includes(value.input.responseFormat) || typeof value.input.stream !== 'boolean') throw new TypeError('ai_execution_chat_shape_invalid');
+    if (value.input.messages.length === 0 || value.input.messages.length > 128 || !['text', 'json_object', 'json_schema'].includes(value.input.responseFormat) || typeof value.input.stream !== 'boolean') throw new TypeError('ai_execution_chat_shape_invalid');
+    if (value.input.responseFormat === 'json_schema') {
+      const format = value.input.jsonSchema;
+      if (format === undefined || format.strict !== true || !/^[A-Za-z_][A-Za-z0-9_-]{0,63}$/u.test(format.name)) throw new TypeError('ai_execution_json_schema_invalid');
+      if (format.description !== undefined) text(format.description, 'json_schema_description', 2_000);
+      if (format.schema === null || typeof format.schema !== 'object' || Array.isArray(format.schema)) throw new TypeError('ai_execution_json_schema_invalid');
+      boundedJson(format.schema, 'ai_execution_json_schema_invalid');
+    } else if (value.input.jsonSchema !== undefined) throw new TypeError('ai_execution_json_schema_unexpected');
+    const tools = value.input.tools ?? [];
+    if (tools.length > 64 || new Set(tools.map(({ function: definition }) => definition?.name)).size !== tools.length) throw new TypeError('ai_execution_tools_invalid');
+    for (const tool of tools) {
+      if (tool === null || typeof tool !== 'object' || tool.type !== 'function') throw new TypeError('ai_execution_tool_invalid');
+      toolName(tool.function?.name);
+      if (tool.function.description !== undefined) text(tool.function.description, 'tool_description', 4_000);
+      if (tool.function.parameters === null || typeof tool.function.parameters !== 'object' || Array.isArray(tool.function.parameters) || typeof tool.function.strict !== 'boolean' && tool.function.strict !== undefined) throw new TypeError('ai_execution_tool_parameters_invalid');
+      boundedJson(tool.function.parameters, 'ai_execution_tool_parameters_invalid');
+    }
+    const toolChoice = value.input.toolChoice ?? 'auto';
+    if (typeof toolChoice === 'string') {
+      if (!['auto', 'none', 'required'].includes(toolChoice) || toolChoice === 'required' && tools.length === 0) throw new TypeError('ai_execution_tool_choice_invalid');
+    } else if (toolChoice === null || toolChoice.type !== 'function' || !tools.some(({ function: definition }) => definition.name === toolChoice.function?.name)) throw new TypeError('ai_execution_tool_choice_invalid');
+    if (value.input.parallelToolCalls !== undefined && typeof value.input.parallelToolCalls !== 'boolean') throw new TypeError('ai_execution_parallel_tools_invalid');
+    if (value.input.reasoningEffort !== undefined && !['none', 'low', 'medium', 'high'].includes(value.input.reasoningEffort)) throw new TypeError('ai_execution_reasoning_effort_invalid');
     let characters = 0;
+    const priorToolCalls = new Set<string>();
+    const toolResults = new Set<string>();
     for (const message of value.input.messages) {
+      if (!['system', 'user', 'assistant', 'tool'].includes(message.role)) throw new TypeError('ai_execution_message_role_invalid');
+      if (message.name !== undefined) toolName(message.name);
+      if (message.toolCalls !== undefined) {
+        if (message.role !== 'assistant' || message.toolCalls.length === 0 || message.toolCalls.length > 64) throw new TypeError('ai_execution_message_tool_calls_invalid');
+        for (const call of message.toolCalls) {
+          assertToolCall(call);
+          if (priorToolCalls.has(call.id)) throw new TypeError('ai_execution_tool_call_duplicate');
+          priorToolCalls.add(call.id);
+        }
+      }
+      if (message.toolCallId !== undefined) {
+        if (message.role !== 'tool' || !priorToolCalls.has(message.toolCallId) || toolResults.has(message.toolCallId)) throw new TypeError(message.role === 'tool' && toolResults.has(message.toolCallId) ? 'ai_execution_tool_result_duplicate' : 'ai_execution_tool_result_unknown');
+        toolResults.add(message.toolCallId);
+      } else if (message.role === 'tool') throw new TypeError('ai_execution_tool_result_id_required');
+      if (message.content === null) {
+        if (message.role !== 'assistant' || message.toolCalls === undefined) throw new TypeError('ai_execution_message_content_invalid');
+        continue;
+      }
       if (typeof message.content === 'string') { text(message.content, 'message', 100_000); characters += message.content.length; continue; }
       if (!Array.isArray(message.content) || message.content.length === 0 || message.content.length > 32) throw new TypeError('ai_execution_message_content_invalid');
       for (const part of message.content) {
@@ -174,8 +285,18 @@ export function assertAiExecutionRequest(value: AiExecutionRequest): void {
 function assertOutput(request: AiExecutionRequest, output: AiExecutionOutput): void {
   if (output.kind !== request.input.kind) throw new TypeError('ai_execution_output_kind_invalid');
   if (output.kind === 'chat') {
-    text(output.content, 'chat_content', 1_000_000);
+    if (output.content.length > 0) text(output.content, 'chat_content', 1_000_000);
     if (!['stop', 'length', 'tool_calls'].includes(output.finishReason)) throw new TypeError('ai_execution_finish_reason_invalid');
+    if (output.finishReason === 'tool_calls') {
+      if (output.toolCalls === undefined || output.toolCalls.length === 0 || output.content.length > 0 && output.content.length > 1_000_000) throw new TypeError('ai_execution_tool_calls_required');
+      const ids = new Set<string>();
+      for (const call of output.toolCalls) { assertToolCall(call); if (ids.has(call.id)) throw new TypeError('ai_execution_tool_call_duplicate'); ids.add(call.id); }
+    } else if (output.toolCalls !== undefined) throw new TypeError('ai_execution_tool_calls_unexpected');
+    if (request.input.kind === 'chat' && request.input.responseFormat !== 'text') {
+      let parsed: JsonValue;
+      try { parsed = JSON.parse(output.content) as JsonValue; } catch { throw new TypeError('ai_execution_structured_output_invalid'); }
+      if (output.structured === undefined || JSON.stringify(output.structured) !== JSON.stringify(parsed)) throw new TypeError('ai_execution_structured_output_invalid');
+    } else if (output.structured !== undefined) throw new TypeError('ai_execution_structured_output_unexpected');
     const evidence = request.input.kind === 'chat' ? request.input.evidence : undefined;
     if (evidence !== undefined) {
       if (output.claims === undefined || output.claims.length === 0 || output.content !== output.claims.map(({ text: claim }) => claim).join('\n')) throw new TypeError('ai_execution_grounded_claims_required');
@@ -214,6 +335,7 @@ export function createAiExecutionResult(input: {
   usage: AiUsage;
   supplierCost: AssetAmount;
   output: AiExecutionOutput;
+  executedModelId?: string;
 }): Readonly<AiExecutionResult> {
   assertAiExecutionRequest(input.request);
   if (!verifyAiRouteDecision(input.routeDecision) || input.routeDecision.outcome !== 'selected' || input.routeDecision.operationId !== input.request.operationId || input.routeDecision.productId !== input.request.productId || input.routeDecision.requestedModel !== input.request.requestedModel) throw new TypeError('ai_execution_route_decision_invalid');
@@ -222,6 +344,7 @@ export function createAiExecutionResult(input: {
   usage(input.usage);
   for (const name of Object.keys(input.usage) as (keyof AiUsage)[]) if (input.usage[name] > (input.request.usageBounds[name] ?? 0)) throw new TypeError(`ai_execution_usage_exceeded:${name}`);
   amount(input.supplierCost, 'supplier_cost');
+  if (input.executedModelId !== undefined) text(input.executedModelId, 'executed_model', 160);
   if (BigInt(input.supplierCost.amountAtomic) > BigInt(input.request.maximumSupplierCost.amountAtomic) || BigInt(input.supplierCost.amountAtomic) > BigInt(input.routeDecision.maximumSupplierCost?.amountAtomic ?? '-1')) throw new TypeError('ai_execution_supplier_cost_exceeded');
   assertOutput(input.request, input.output);
   const unsigned = {
@@ -234,6 +357,7 @@ export function createAiExecutionResult(input: {
     routeId: input.routeDecision.selectedRouteId!,
     providerId: input.routeDecision.selectedProviderId!,
     exactModelId: input.routeDecision.selectedExactModelId!,
+    ...(input.executedModelId === undefined || input.executedModelId === input.routeDecision.selectedExactModelId ? {} : { executedModelId: input.executedModelId }),
     completedAt: input.completedAt,
     usage: input.usage,
     supplierCost: input.supplierCost,
@@ -244,7 +368,7 @@ export function createAiExecutionResult(input: {
 
 export function verifyAiExecutionResult(value: AiExecutionResult, request: AiExecutionRequest, decision: AiRouteDecision): boolean {
   try {
-    const rebuilt = createAiExecutionResult({ request, routeDecision: decision, completedAt: value.completedAt, usage: value.usage, supplierCost: value.supplierCost, output: value.output });
+    const rebuilt = createAiExecutionResult({ request, routeDecision: decision, completedAt: value.completedAt, usage: value.usage, supplierCost: value.supplierCost, output: value.output, ...(value.executedModelId === undefined ? {} : { executedModelId: value.executedModelId }) });
     return JSON.stringify(rebuilt) === JSON.stringify(value);
   } catch { return false; }
 }

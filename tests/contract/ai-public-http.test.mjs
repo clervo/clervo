@@ -572,9 +572,9 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
       false,
       false,
       false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
     ],
   );
 });

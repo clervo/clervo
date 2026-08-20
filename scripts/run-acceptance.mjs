@@ -25,6 +25,7 @@ const gates = [
   ['repository safety checks', node, ['scripts/test-n0.3.mjs']],
   ['build', tsc, ['--project', 'tsconfig.json']],
   ['contract schemas', node, ['scripts/validate-contracts.mjs']],
+  ['H4 product catalog projection', node, ['scripts/ai/project-h4-product-catalog.mjs']],
   ['discovery generation', node, ['scripts/generate-discovery.mjs']],
   // The consistency tests compare the generated public truth with the exact
   // files the site serves. A clean checkout has no projected site files until

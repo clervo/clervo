@@ -4,6 +4,7 @@ import {
   canonicalRequestHash,
   normalizeAiHttpRequest,
 } from '../../../dist/packages/contracts/src/index.js';
+import { assertSupportedStrictJsonSchema } from '../../../dist/services/ai/src/json-schema.js';
 import { resolveCompatibilityModel } from './compatibility-model-map.mjs';
 
 export const OPENAI_RESPONSES_PATH = '/v1/responses';
@@ -85,6 +86,15 @@ function normalizeInputMessage(item) {
     refuse('openai_responses_input_item_invalid');
   }
 
+  if (item.type === 'function_call') {
+    if (typeof item.call_id !== 'string' || typeof item.name !== 'string' || typeof item.arguments !== 'string') refuse('openai_responses_function_call_invalid');
+    return { role: 'assistant', content: null, toolCalls: [{ id: item.call_id, type: 'function', function: { name: item.name, arguments: item.arguments } }] };
+  }
+  if (item.type === 'function_call_output') {
+    if (typeof item.call_id !== 'string' || typeof item.output !== 'string') refuse('openai_responses_function_output_invalid');
+    return { role: 'tool', content: item.output, toolCallId: item.call_id };
+  }
+
   const allowed = new Set(['type', 'role', 'content']);
   if (Object.keys(item).some((key) => !allowed.has(key))) {
     refuse('openai_responses_input_item_property_unsupported', 422);
@@ -147,7 +157,7 @@ function normalizeInstructions(instructions) {
 }
 
 function responseFormat(text) {
-  if (text === undefined) return 'text';
+  if (text === undefined) return { responseFormat: 'text' };
 
   if (
     text === null
@@ -163,7 +173,7 @@ function responseFormat(text) {
     refuse('openai_responses_text_property_unsupported', 422);
   }
 
-  if (text.format === undefined) return 'text';
+  if (text.format === undefined) return { responseFormat: 'text' };
 
   if (
     text.format === null
@@ -173,7 +183,7 @@ function responseFormat(text) {
     refuse('openai_responses_text_format_invalid');
   }
 
-  const formatAllowed = new Set(['type']);
+  const formatAllowed = new Set(['type', 'name', 'description', 'schema', 'strict']);
 
   if (
     Object.keys(text.format)
@@ -185,10 +195,30 @@ function responseFormat(text) {
     );
   }
 
-  if (text.format.type === 'text') return 'text';
-  if (text.format.type === 'json_object') return 'json_object';
+  if (text.format.type === 'text') return { responseFormat: 'text' };
+  if (text.format.type === 'json_object') return { responseFormat: 'json_object' };
+  if (text.format.type === 'json_schema') {
+    const format = text.format;
+    if (typeof format.name !== 'string' || format.strict !== true || format.schema === null || typeof format.schema !== 'object' || Array.isArray(format.schema)) refuse('openai_responses_json_schema_invalid');
+    assertSupportedStrictJsonSchema(format.schema);
+    return { responseFormat: 'json_schema', jsonSchema: { name: format.name, ...(format.description === undefined ? {} : { description: format.description }), schema: structuredClone(format.schema), strict: true } };
+  }
 
   refuse('openai_responses_text_format_unsupported', 422);
+}
+
+function normalizeResponseTool(tool) {
+  if (tool === null || typeof tool !== 'object' || Array.isArray(tool) || tool.type !== 'function' || typeof tool.name !== 'string' || tool.parameters === null || typeof tool.parameters !== 'object' || Array.isArray(tool.parameters)) refuse('openai_responses_tool_invalid');
+  if (tool.strict === true) assertSupportedStrictJsonSchema(tool.parameters);
+  else if (tool.strict !== undefined && tool.strict !== false) refuse('openai_responses_tool_strict_invalid');
+  return { type: 'function', function: { name: tool.name, ...(tool.description === undefined ? {} : { description: tool.description }), parameters: structuredClone(tool.parameters), ...(tool.strict === undefined ? {} : { strict: tool.strict }) } };
+}
+
+function normalizeResponseToolChoice(value) {
+  if (value === undefined) return 'auto';
+  if (['auto', 'none', 'required'].includes(value)) return value;
+  if (value === null || typeof value !== 'object' || Array.isArray(value) || value.type !== 'function' || typeof value.name !== 'string') refuse('openai_responses_tool_choice_invalid');
+  return { type: 'function', function: { name: value.name } };
 }
 
 export function normalizeOpenAiResponsesRequest(value) {
@@ -287,12 +317,6 @@ export function normalizeOpenAiResponsesRequest(value) {
   );
 
   assertDefault(
-    value.tool_choice,
-    'auto',
-    'openai_responses_tool_choice_unsupported',
-  );
-
-  assertDefault(
     value.truncation,
     'disabled',
     'openai_responses_truncation_unsupported',
@@ -310,11 +334,9 @@ export function normalizeOpenAiResponsesRequest(value) {
     'openai_responses_top_logprobs_unsupported',
   );
 
-  assertEmptyArray(
-    value.tools,
-    'openai_responses_tools_invalid',
-    'openai_responses_tools_unsupported',
-  );
+  if (value.tools !== undefined && !Array.isArray(value.tools)) refuse('openai_responses_tools_invalid');
+  const tools = (value.tools ?? []).map(normalizeResponseTool);
+  const toolChoice = normalizeResponseToolChoice(value.tool_choice);
 
   assertEmptyArray(
     value.include,
@@ -337,10 +359,11 @@ export function normalizeOpenAiResponsesRequest(value) {
     'openai_responses_prompt_unsupported',
   );
 
-  assertUnsupported(
-    value.reasoning,
-    'openai_responses_reasoning_controls_unsupported',
-  );
+  let reasoningEffort;
+  if (value.reasoning !== undefined) {
+    if (value.reasoning === null || typeof value.reasoning !== 'object' || Array.isArray(value.reasoning) || !['none', 'low', 'medium', 'high'].includes(value.reasoning.effort) || Object.keys(value.reasoning).some((key) => key !== 'effort')) refuse('openai_responses_reasoning_controls_invalid');
+    reasoningEffort = value.reasoning.effort;
+  }
 
   assertUnsupported(
     value.metadata,
@@ -377,6 +400,7 @@ export function normalizeOpenAiResponsesRequest(value) {
     'openai_responses_user_unsupported',
   );
 
+  const format = responseFormat(value.text);
   return normalizeAiHttpRequest({
     model: resolveCompatibilityModel(value.model),
     input: {
@@ -385,7 +409,9 @@ export function normalizeOpenAiResponsesRequest(value) {
         ...normalizeInstructions(value.instructions),
         ...normalizeInput(value.input),
       ],
-      responseFormat: responseFormat(value.text),
+      ...format,
+      ...(tools.length === 0 ? {} : { tools, toolChoice, parallelToolCalls: value.parallel_tool_calls === true }),
+      ...(reasoningEffort === undefined ? {} : { reasoningEffort }),
       stream: value.stream === true,
     },
     ...(value.max_output_tokens === undefined
@@ -649,7 +675,7 @@ export function createOpenAiResponsesDiscoveryContract(
 }
 
 function responseState(finishReason) {
-  if (finishReason === 'stop') {
+  if (finishReason === 'stop' || finishReason === 'tool_calls') {
     return {
       status: 'completed',
       messageStatus: 'completed',
@@ -711,8 +737,7 @@ export function createOpenAiResponse(
     max_output_tokens:
       openAiRequest.max_output_tokens ?? null,
     model: value.exactModelId,
-    output: [
-      {
+    output: output.toolCalls === undefined ? [{
         id: `msg_${String(value.operationId).replace(/^op_/, '')}`,
         type: 'message',
         status: state.messageStatus,
@@ -724,9 +749,15 @@ export function createOpenAiResponse(
             annotations: [],
           },
         ],
-      },
-    ],
-    parallel_tool_calls: true,
+      }] : output.toolCalls.map((call) => ({
+        id: call.id,
+        type: 'function_call',
+        status: 'completed',
+        call_id: call.id,
+        name: call.function.name,
+        arguments: call.function.arguments,
+      })),
+    parallel_tool_calls: openAiRequest.parallel_tool_calls ?? true,
     previous_response_id: null,
     reasoning: {
       effort: null,
@@ -736,11 +767,11 @@ export function createOpenAiResponse(
     temperature: 1,
     text: {
       format: {
-        type: responseFormat(openAiRequest.text),
+        type: responseFormat(openAiRequest.text).responseFormat,
       },
     },
-    tool_choice: 'auto',
-    tools: [],
+    tool_choice: openAiRequest.tool_choice ?? 'auto',
+    tools: openAiRequest.tools ?? [],
     top_p: 1,
     truncation: 'disabled',
     usage: {

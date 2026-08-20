@@ -32,9 +32,9 @@ const freeModels = new Set([
 ]);
 
 const aliasContracts = Object.freeze({
-  'clervo/gpt-5.6-luna': ['clervo/fast'],
-  'clervo/gpt-5.6-terra': ['clervo/smart'],
-  'clervo/gpt-5.6-sol': ['clervo/code', 'clervo/deep'],
+  'clervo/gpt-oss-20b': ['clervo/fast'],
+  'clervo/gpt-oss-120b': ['clervo/smart', 'clervo/deep'],
+  'clervo/kimi-k2.7-code': ['clervo/code'],
 });
 
 // Minimum post-integration production checks may refine health without

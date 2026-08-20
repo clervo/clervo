@@ -15,7 +15,7 @@ export function createFreeAiOperationProcessor({ stateStore, quotaStore, policy,
   if (!publicPricing || typeof publicPricing.quote !== 'function' || !Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_free_runtime');
 
   return Object.freeze({
-    async process({ idempotencyKey, requestHash, operationId, normalized, subject, now, deadlineAt, signal }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, subject, now, deadlineAt, signal, onEvent }) {
       const validUntil = Date.parse(policy.validUntil);
       if (!Number.isFinite(validUntil) || validUntil <= Date.parse(now)) problem('ai_free_policy_expired');
       const stateKey = `ai-free:${idempotencyKey}`;
@@ -54,6 +54,7 @@ export function createFreeAiOperationProcessor({ stateStore, quotaStore, policy,
           aliasTargets: quote.aliasTargets, startedAt: now, signal,
           ...(deadlineAt === undefined ? { clock: () => Date.parse(now) } : {}),
           monitor,
+          ...(onEvent === undefined ? {} : { onEvent }),
         });
         if (outcome.outcome !== 'completed') problem(`ai_execution_${outcome.failureCode}`);
         const response = createAiFreeHttpResult({ request, requestHash, result: outcome.result });

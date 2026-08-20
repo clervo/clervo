@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "clervo.ai-h4-product-policy.v1",
+  "revision": "h4-product-policy-2026-08-20.1",
+  "decidedAt": "2026-08-20T00:00:00.000Z",
+  "customerMessage": "Model temporarily unavailable. Please choose another available model.",
+  "temporarilyUnavailableModelIds": [
+    "clervo/claude-haiku-4-5-20251001",
+    "clervo/claude-opus-4-6",
+    "clervo/claude-opus-4-7",
+    "clervo/claude-opus-4-8",
+    "clervo/claude-opus-5",
+    "clervo/claude-sonnet-4-6",
+    "clervo/claude-sonnet-5",
+    "clervo/gpt-5.6-luna",
+    "clervo/gpt-5.6-sol",
+    "clervo/gpt-5.6-terra"
+  ],
+  "aliases": {
+    "clervo/fast": "clervo/gpt-oss-20b",
+    "clervo/smart": "clervo/gpt-oss-120b",
+    "clervo/code": "clervo/kimi-k2.7-code",
+    "clervo/deep": "clervo/gpt-oss-120b"
+  },
+  "capabilityOverrides": {
+    "clervo/gpt-oss-20b": [
+      "text_input",
+      "text_output",
+      "streaming",
+      "structured_output",
+      "strict_schema",
+      "tool_calling",
+      "reasoning"
+    ],
+    "clervo/gpt-oss-120b": [
+      "text_input",
+      "text_output",
+      "streaming",
+      "structured_output",
+      "strict_schema",
+      "tool_calling",
+      "reasoning"
+    ],
+    "clervo/kimi-k2.7-code": [
+      "text_input",
+      "text_output",
+      "tool_calling",
+      "parallel_tool_calling"
+    ]
+  },
+  "exactEquivalentRoutes": [
+    {
+      "customerModelId": "clervo/gpt-oss-20b",
+      "providerModelId": "openai/gpt-oss-20b",
+      "providerId": "provider.groq",
+      "secretName": "GROQ_API_KEY"
+    },
+    {
+      "customerModelId": "clervo/gpt-oss-120b",
+      "providerModelId": "openai/gpt-oss-120b",
+      "providerId": "provider.groq",
+      "secretName": "GROQ_API_KEY"
+    }
+  ]
+}

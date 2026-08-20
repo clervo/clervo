@@ -72,7 +72,7 @@
     "supplyChainReport": "docs/evidence/sandbox/control-supply-chain.v5.json",
     "supplyChainReportSha256": "sha256:fa5d07c117bad5f9e594d65e44acda9b8ca4ffeec344cbae1bb508380894d6dd",
     "liveSmokeReport": "docs/evidence/sandbox/control-service-live-smoke.v1.json",
-    "liveSmokeReportSha256": "sha256:50e038531c40e7218e41056394b5eb67469e266d6c8491e05edd379d9efdec4b",
+    "liveSmokeReportSha256": "sha256:b8dfa4630f263aa4906585624c9bcc381ef7791b08280510a264c2f5d2dfa0bf",
     "interruptionRecoveryReport": "docs/evidence/sandbox/control-interruption-recovery.v1.json",
     "interruptionRecoveryReportSha256": "sha256:1891ed4769cc7761e10f043ca6746f239bc765521e0412fcef7dd607043c376e",
     "authenticatedUsefulExecution": true,

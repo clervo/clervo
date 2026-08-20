@@ -66,7 +66,7 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Model selection
 
-- 89 callable IDs: 85 canonical and 4 stable aliases; 88 sellable now.
+- 89 callable IDs: 85 canonical and 4 stable aliases; 79 sellable now.
 - Send a canonical `id`, or an alias whose `clervo.aliasFor` contract you accept, as `model` on `POST /v1/ai/execute`.
 - Use `clervo.availability`, `clervo.health`, and `clervo.publicSellable` before selection. Canonical IDs never substitute another model.
 - Use `clervo.customerPricing` and `clervo.billingMode` for discovery. A paid request's 402 is the binding maximum charge.

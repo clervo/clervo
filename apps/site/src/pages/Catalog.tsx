@@ -85,6 +85,9 @@ export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
           Search every current Clervo model by human name, creator, modality, and state.
           Canonical identities stay pinned; Clervo routing profiles are labelled separately.
         </p>
+        <p className="s4-lede">
+          GPT-5.6 and Claude models are temporarily unavailable. Choose another available model.
+        </p>
 
         <div className="s4-search-stage">
           <div className="s4-search-main">
@@ -94,13 +97,13 @@ export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
               id="s4-catalog-search"
               value={query}
               onChange={(event) => update('q', event.currentTarget.value)}
-              placeholder="Claude, GPT, Gemini, Llama, DeepSeek, Qwen…"
+              placeholder="Gemini, Llama, DeepSeek, Qwen, Kimi…"
               type="search"
             />
             <button className="b12-button b12-button-primary b12-liquid" type="button" onClick={() => document.getElementById('s4-catalog-results')?.scrollIntoView({ block: 'start' })}>Show models</button>
           </div>
           <div className="s4-search-presets" aria-label="Popular model families">
-            {['Claude', 'GPT', 'Gemini', 'Llama', 'DeepSeek', 'Qwen'].map((preset) => (
+            {['Gemini', 'Llama', 'DeepSeek', 'Qwen', 'Kimi'].map((preset) => (
               <button key={preset} type="button" onClick={() => update('q', preset)}>{preset}</button>
             ))}
           </div>

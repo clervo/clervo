@@ -4,6 +4,7 @@ import {
   canonicalRequestHash,
   normalizeAiHttpRequest,
 } from '../../../dist/packages/contracts/src/index.js';
+import { assertSupportedStrictJsonSchema } from '../../../dist/services/ai/src/json-schema.js';
 import { resolveCompatibilityModel } from './compatibility-model-map.mjs';
 
 export const ANTHROPIC_MESSAGES_PATH = '/v1/messages';
@@ -51,6 +52,20 @@ function normalizeTextContent(content) {
   });
 }
 
+function normalizeAnthropicTool(tool) {
+  if (tool === null || typeof tool !== 'object' || Array.isArray(tool) || typeof tool.name !== 'string' || tool.input_schema === null || typeof tool.input_schema !== 'object' || Array.isArray(tool.input_schema)) refuse('anthropic_tool_invalid');
+  assertSupportedStrictJsonSchema(tool.input_schema);
+  return { type: 'function', function: { name: tool.name, ...(tool.description === undefined ? {} : { description: tool.description }), parameters: structuredClone(tool.input_schema), strict: true } };
+}
+
+function normalizeAnthropicToolChoice(value) {
+  if (value === undefined || value?.type === 'auto') return 'auto';
+  if (value?.type === 'none') return 'none';
+  if (value?.type === 'any') return 'required';
+  if (value?.type === 'tool' && typeof value.name === 'string') return { type: 'function', function: { name: value.name } };
+  refuse('anthropic_tool_choice_invalid');
+}
+
 function normalizeMessage(message) {
   if (
     message === null
@@ -69,10 +84,31 @@ function normalizeMessage(message) {
     refuse('anthropic_message_role_unsupported', 422);
   }
 
-  return {
-    role: message.role,
-    content: normalizeTextContent(message.content),
-  };
+  if (typeof message.content === 'string') return [{ role: message.role, content: message.content }];
+  if (!Array.isArray(message.content) || message.content.length === 0) refuse('anthropic_message_content_invalid');
+  if (message.role === 'assistant') {
+    const textBlocks = [];
+    const toolCalls = [];
+    for (const part of message.content) {
+      if (part?.type === 'text' && typeof part.text === 'string') textBlocks.push({ type: 'text', text: part.text });
+      else if (part?.type === 'tool_use' && typeof part.id === 'string' && typeof part.name === 'string' && part.input !== null && typeof part.input === 'object' && !Array.isArray(part.input)) toolCalls.push({ id: part.id, type: 'function', function: { name: part.name, arguments: JSON.stringify(part.input) } });
+      else refuse('anthropic_content_block_unsupported', 422);
+    }
+    return [{ role: 'assistant', content: textBlocks.length === 0 ? null : textBlocks, ...(toolCalls.length === 0 ? {} : { toolCalls }) }];
+  }
+  const normalized = [];
+  const textBlocks = [];
+  for (const part of message.content) {
+    if (part?.type === 'text' && typeof part.text === 'string') textBlocks.push({ type: 'text', text: part.text });
+    else if (part?.type === 'tool_result' && typeof part.tool_use_id === 'string') {
+      if (textBlocks.length > 0) { normalized.push({ role: 'user', content: textBlocks.splice(0) }); }
+      const content = typeof part.content === 'string' ? part.content : Array.isArray(part.content) ? part.content.filter((block) => block?.type === 'text' && typeof block.text === 'string').map(({ text }) => text).join('\n') : '';
+      if (content.length === 0) refuse('anthropic_tool_result_invalid');
+      normalized.push({ role: 'tool', content, toolCallId: part.tool_use_id });
+    } else refuse('anthropic_content_block_unsupported', 422);
+  }
+  if (textBlocks.length > 0) normalized.push({ role: 'user', content: textBlocks });
+  return normalized;
 }
 
 function normalizeSystem(system) {
@@ -180,22 +216,20 @@ export function normalizeAnthropicMessagesRequest(value) {
     value.metadata,
     'anthropic_metadata_unsupported',
   );
-  assertUnsupported(
-    value.tools,
-    'anthropic_tools_unsupported',
-  );
-  assertUnsupported(
-    value.tool_choice,
-    'anthropic_tool_choice_unsupported',
-  );
+  if (value.tools !== undefined && !Array.isArray(value.tools)) refuse('anthropic_tools_invalid');
+  const tools = (value.tools ?? []).map(normalizeAnthropicTool);
+  const toolChoice = normalizeAnthropicToolChoice(value.tool_choice);
   assertUnsupported(
     value.thinking,
     'anthropic_thinking_unsupported',
   );
-  assertUnsupported(
-    value.output_config,
-    'anthropic_output_config_unsupported',
-  );
+  let format = { responseFormat: 'text' };
+  if (value.output_config !== undefined) {
+    const configured = value.output_config?.format;
+    if (configured?.type !== 'json_schema' || typeof configured.name !== 'string' || configured.schema === null || typeof configured.schema !== 'object' || Array.isArray(configured.schema)) refuse('anthropic_output_config_unsupported', 422);
+    assertSupportedStrictJsonSchema(configured.schema);
+    format = { responseFormat: 'json_schema', jsonSchema: { name: configured.name, ...(configured.description === undefined ? {} : { description: configured.description }), schema: structuredClone(configured.schema), strict: true } };
+  }
 
   if (
     value.service_tier !== undefined
@@ -227,9 +261,10 @@ export function normalizeAnthropicMessagesRequest(value) {
       kind: 'chat',
       messages: [
         ...normalizeSystem(value.system),
-        ...value.messages.map(normalizeMessage),
+        ...value.messages.flatMap(normalizeMessage),
       ],
-      responseFormat: 'text',
+      ...format,
+      ...(tools.length === 0 ? {} : { tools, toolChoice, parallelToolCalls: false }),
       stream: value.stream === true,
     },
     maximumOutputTokens: value.max_tokens,
@@ -396,6 +431,7 @@ export function createAnthropicMessagesDiscoveryContract(
 function anthropicStopReason(finishReason) {
   if (finishReason === 'stop') return 'end_turn';
   if (finishReason === 'length') return 'max_tokens';
+  if (finishReason === 'tool_calls') return 'tool_use';
 
   refuse('anthropic_result_finish_reason_invalid', 503);
 }
@@ -416,10 +452,8 @@ export function createAnthropicMessage(value) {
     role: 'assistant',
     model: value.exactModelId,
     content: [
-      {
-        type: 'text',
-        text: output.content,
-      },
+      ...(output.content.length === 0 ? [] : [{ type: 'text', text: output.content }]),
+      ...(output.toolCalls ?? []).map((call) => ({ type: 'tool_use', id: call.id, name: call.function.name, input: JSON.parse(call.function.arguments) })),
     ],
     stop_reason: anthropicStopReason(output.finishReason),
     stop_sequence: null,

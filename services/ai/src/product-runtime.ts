@@ -19,6 +19,7 @@ import type {
   ComposedAiProductCatalog,
 } from './product-catalog.js';
 import { aiPricingRateKeys } from './product-catalog.js';
+import { assertSupportedStrictJsonSchema } from './json-schema.js';
 
 const minimumChargeAtomic = 1_000n;
 
@@ -31,6 +32,9 @@ function quoteCapabilities(
         kind?: string;
         stream?: boolean;
         responseFormat?: string;
+        tools?: readonly unknown[];
+        parallelToolCalls?: boolean;
+        reasoningEffort?: string;
       };
     }
   ).input;
@@ -44,6 +48,18 @@ function quoteCapabilities(
     ...(input.responseFormat === 'json_object'
       ? ['structured_output' as const]
       : []),
+    ...(input.responseFormat === 'json_schema'
+      ? ['structured_output' as const, 'strict_schema' as const]
+      : []),
+    ...((input.tools?.length ?? 0) > 0
+      ? ['tool_calling' as const]
+      : []),
+    ...(input.parallelToolCalls === true && (input.tools?.length ?? 0) > 0
+      ? ['parallel_tool_calling' as const]
+      : []),
+    ...(input.reasoningEffort !== undefined && input.reasoningEffort !== 'none'
+      ? ['reasoning' as const]
+      : []),
   ];
 }
 
@@ -56,6 +72,9 @@ function qualificationChecks(model: Readonly<AiInternalProductModel>) {
     ...aiQualificationCheckNames,
     ...(model.supply.capabilities.includes('streaming') ? ['streaming' as const] : []),
     ...(model.supply.capabilities.includes('structured_output') ? ['structured_output' as const] : []),
+    ...(model.supply.capabilities.includes('strict_schema') ? ['strict_schema' as const] : []),
+    ...(model.supply.capabilities.includes('tool_calling') ? ['tool_calling' as const] : []),
+    ...(model.supply.capabilities.includes('parallel_tool_calling') ? ['parallel_tool_calling' as const] : []),
   ];
   const evidenceHash = hashJson({ evidenceRef: model.supply.qualification.evidenceRef } as unknown as JsonValue);
   return names.map((name) => Object.freeze({ name, status: 'passed' as const, evidenceHash }));
@@ -66,7 +85,7 @@ export interface AiProductRuntimeProjection {
   routes: readonly Readonly<AiRuntimeRoute & { customerPricing: Readonly<AiRoutePricing>; priceVersion: string }>[];
   runtimeBindings: ComposedAiProductCatalog['privateRuntimeBindings'];
   aliasTargets: Readonly<Partial<Record<AiAlias, string>>>;
-  modelStates: ReadonlyMap<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string }>>;
+  modelStates: ReadonlyMap<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string; temporaryUnavailable: boolean }>>;
 }
 
 export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiProductCatalog>): Readonly<AiProductRuntimeProjection> {
@@ -122,9 +141,10 @@ export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiPro
     });
   });
   const aliasTargets = Object.freeze(Object.fromEntries(catalog.publicModels.flatMap((model) => model.aliases.map((alias) => [alias, model.modelId]))) as Partial<Record<AiAlias, string>>);
-  const modelStates = new Map<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string }>>();
+  const modelStates = new Map<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string; temporaryUnavailable: boolean }>>();
   for (const model of catalog.publicModels) {
-    const state = Object.freeze({ publicSellable: model.publicSellable, productIds: model.productIds, availability: model.availability });
+    const temporaryUnavailable = catalog.internalModels.some(({ identity, supply }) => identity.customerModelId === model.modelId && supply.availability.reason === 'temporarily_unavailable');
+    const state = Object.freeze({ publicSellable: model.publicSellable, productIds: model.productIds, availability: model.availability, temporaryUnavailable });
     modelStates.set(model.modelId, state);
     for (const alias of model.aliases) modelStates.set(alias, state);
   }
@@ -146,18 +166,33 @@ export function createDynamicAiPublicPricing(projection: Readonly<AiProductRunti
       });
     },
     quote({ normalized, operationId, now }: { normalized: Readonly<{ model: string; productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on'; usageBounds: AiUsageBounds }>; operationId: string; now: string }) {
+      const chatInput = (normalized as { input?: { kind?: string; responseFormat?: string; jsonSchema?: { schema?: unknown }; tools?: readonly { function?: { parameters?: unknown; strict?: boolean } }[] } }).input;
+      if (chatInput?.kind === 'chat') {
+        if (chatInput.responseFormat === 'json_schema') assertSupportedStrictJsonSchema(chatInput.jsonSchema?.schema);
+        for (const tool of chatInput.tools ?? []) if (tool.function?.strict === true) assertSupportedStrictJsonSchema(tool.function.parameters);
+      }
       const modelState = projection.modelStates.get(normalized.model);
       if (modelState === undefined) throw Object.assign(new Error('ai_model_not_found'), { status: 404 });
       if (!modelState.publicSellable || modelState.availability !== 'available' || !modelState.productIds.includes(normalized.productId)) {
+        if (modelState.temporaryUnavailable) {
+          const availableAlternatives = [...projection.modelStates.entries()].filter(([id, state]) => !id.startsWith('clervo/claude') && !id.includes('gpt-5.6') && state.publicSellable && state.availability === 'available' && state.productIds.includes(normalized.productId)).map(([id]) => id).slice(0, 8);
+          throw Object.assign(new Error('ai_model_temporarily_unavailable'), { status: 422, customerMessage: 'Model temporarily unavailable. Please choose another available model.', availableAlternatives });
+        }
         throw Object.assign(new Error('ai_model_unavailable'), { status: 422 });
       }
       if (projection.catalog === null) throw Object.assign(new Error('ai_route_unavailable'), { status: 503, rejectionCodes: ['commercial_supply_unavailable'] });
+      const requiredCapabilities = quoteCapabilities(normalized);
+      const exactModelId = projection.aliasTargets[normalized.model as AiAlias] ?? normalized.model;
+      const exactRoute = projection.routes.find(({ definition }) => definition.exactModelId === exactModelId && definition.productIds.includes(normalized.productId));
+      if (exactRoute !== undefined && requiredCapabilities.some((capability) => !exactRoute.definition.capabilities.includes(capability))) {
+        throw Object.assign(new Error('ai_model_capability_unavailable'), { status: 422, requiredCapabilities });
+      }
       const decision = selectAiRoute({
         catalog: projection.catalog,
         operationId,
         productId: normalized.productId,
         requestedModel: normalized.model,
-        requiredCapabilities: quoteCapabilities(normalized),
+        requiredCapabilities,
         usageBounds: normalized.usageBounds,
         maximumSupplierCost: { asset: 'USD', amountAtomic: estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, projection.routes.reduce((highest, route) => {
           const left = BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, highest).amountAtomic);

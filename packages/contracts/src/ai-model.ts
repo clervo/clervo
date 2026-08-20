@@ -11,9 +11,10 @@ export const aiProductIds = [
 export type AiProductId = (typeof aiProductIds)[number];
 
 export const aiCapabilities = [
-  'text_input', 'text_output', 'image_input', 'image_output', 'embedding_output',
-  'audio_output', 'video_output', 'music_output', 'streaming', 'structured_output',
-  'tool_calling', 'reasoning',
+  'text_input', 'text_output', 'image_input', 'image_output', 'audio_input',
+  'audio_output', 'embedding_output', 'video_output', 'music_output', 'streaming',
+  'structured_output', 'strict_schema', 'tool_calling', 'parallel_tool_calling',
+  'reasoning',
 ] as const;
 export type AiCapability = (typeof aiCapabilities)[number];
 
@@ -21,7 +22,9 @@ export const aiQualificationCheckNames = [
   'authentication', 'exact_identity', 'input_dependence', 'output_shape',
   'usage_reporting', 'latency', 'failure_handling', 'cost_ceiling', 'terms',
 ] as const;
-export type AiQualificationCheckName = (typeof aiQualificationCheckNames)[number] | 'streaming' | 'structured_output';
+export type AiQualificationCheckName = (typeof aiQualificationCheckNames)[number]
+  | 'streaming' | 'structured_output' | 'strict_schema' | 'tool_calling'
+  | 'parallel_tool_calling';
 
 export interface AiRouteQualification {
   contractVersion: typeof CONTRACT_VERSION;
@@ -113,6 +116,9 @@ function requiredChecks(capabilities: readonly AiCapability[]): readonly AiQuali
     ...aiQualificationCheckNames,
     ...(capabilities.includes('streaming') ? ['streaming' as const] : []),
     ...(capabilities.includes('structured_output') ? ['structured_output' as const] : []),
+    ...(capabilities.includes('strict_schema') ? ['strict_schema' as const] : []),
+    ...(capabilities.includes('tool_calling') ? ['tool_calling' as const] : []),
+    ...(capabilities.includes('parallel_tool_calling') ? ['parallel_tool_calling' as const] : []),
   ];
 }
 
@@ -128,7 +134,7 @@ function validateQualification(value: AiRouteQualification, capabilities?: reado
   if (capabilities !== undefined && JSON.stringify(value.checks.map(({ name }) => name)) !== JSON.stringify(expectedChecks)) throw new TypeError('ai_qualification_checks_incomplete');
   if (new Set(value.checks.map(({ name }) => name)).size !== value.checks.length) throw new TypeError('ai_qualification_checks_duplicate');
   for (const check of value.checks) {
-    if (![...aiQualificationCheckNames, 'streaming', 'structured_output'].includes(check.name)) throw new TypeError('ai_qualification_check_unknown');
+    if (![...aiQualificationCheckNames, 'streaming', 'structured_output', 'strict_schema', 'tool_calling', 'parallel_tool_calling'].includes(check.name)) throw new TypeError('ai_qualification_check_unknown');
     if (!['passed', 'failed', 'not_run'].includes(check.status)) throw new TypeError('ai_qualification_check_status_invalid');
     if (check.evidenceHash !== undefined && !/^sha256:[a-f0-9]{64}$/u.test(check.evidenceHash)) throw new TypeError('ai_qualification_evidence_hash_invalid');
     if (check.code !== undefined && !/^[a-z][a-z0-9_]{2,63}$/u.test(check.code)) throw new TypeError('ai_qualification_code_invalid');

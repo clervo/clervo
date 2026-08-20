@@ -222,15 +222,69 @@
   "conformanceDefectsOpen": [],
   "aiRoutes": {
     "counts": {
-      "live": 88,
-      "supply_paused": 1
+      "live": 79,
+      "supply_paused": 10
     },
     "paused": [
       {
-        "modelId": "clervo/gpt-oss-20b",
+        "modelId": "clervo/claude-haiku-4-5-20251001",
         "reason": "temporarily_unavailable",
-        "availability": "degraded",
-        "health": "degraded"
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/claude-opus-4-6",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/claude-opus-4-7",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/claude-opus-4-8",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/claude-opus-5",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/claude-sonnet-4-6",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/claude-sonnet-5",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/gpt-5.6-luna",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/gpt-5.6-sol",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
+      },
+      {
+        "modelId": "clervo/gpt-5.6-terra",
+        "reason": "temporarily_unavailable",
+        "availability": "unavailable",
+        "health": "unavailable"
       }
     ]
   },

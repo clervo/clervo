@@ -1,11 +1,14 @@
 import { createHash } from 'node:crypto';
 import type {
   AiAdapterExecution,
+  AiAdapterStreamEvent,
   AiExecutionAdapter,
 } from '../../../services/ai/src/execution.js';
+import { validateStrictJsonSchema } from '../../../services/ai/src/json-schema.js';
 import type {
   AiExecutionOutput,
   AiExecutionRequest,
+  AiToolCall,
   AiUsage,
   JsonValue,
 } from '../../../packages/contracts/src/index.js';
@@ -17,6 +20,13 @@ export interface AiHttpResponse {
   responseHeaders?: Readonly<Record<string, string>>;
 }
 
+export interface AiHttpStreamResponse {
+  status: number;
+  contentType: string;
+  chunks: AsyncIterable<Uint8Array>;
+  responseHeaders?: Readonly<Record<string, string>>;
+}
+
 export interface AiHttpTransport {
   request(input: Readonly<{
     url: string;
@@ -25,24 +35,37 @@ export interface AiHttpTransport {
     signal: AbortSignal;
     maximumResponseBytes: number;
   }>): Promise<Readonly<AiHttpResponse>>;
+  stream?(input: Readonly<{
+    url: string;
+    headers: Readonly<Record<string, string>>;
+    body: Uint8Array;
+    signal: AbortSignal;
+    maximumResponseBytes: number;
+  }>): Promise<Readonly<AiHttpStreamResponse>>;
 }
 
 export function createBoundedAiHttpTransport(fetcher: typeof globalThis.fetch = globalThis.fetch): AiHttpTransport {
+  const responseHeaders = (response: Response) => Object.freeze(Object.fromEntries(
+    ['dg-char-count', 'dg-model-name', 'dg-model-uuid', 'dg-request-id', 'retry-after']
+      .map((name) => [name, response.headers.get(name)] as const)
+      .filter((entry): entry is readonly [string, string] => entry[1] !== null),
+  ));
+  const fetchResponse = async (input: Parameters<AiHttpTransport['request']>[0]) => {
+    const response = await fetcher(input.url, {
+      method: 'POST', headers: input.headers, body: Uint8Array.from(input.body).buffer,
+      signal: input.signal, redirect: 'error',
+    });
+    const declared = response.headers.get('content-length');
+    if (declared !== null && (!/^(?:0|[1-9][0-9]{0,15})$/u.test(declared) || Number(declared) > input.maximumResponseBytes)) throw new TypeError('ai_provider_response_too_large');
+    if (response.body === null) throw new TypeError('ai_provider_response_empty');
+    return response;
+  };
   return Object.freeze({
     async request(input: Parameters<AiHttpTransport['request']>[0]): Promise<Readonly<AiHttpResponse>> {
-      const response = await fetcher(input.url, {
-        method: 'POST',
-        headers: input.headers,
-        body: Uint8Array.from(input.body).buffer,
-        signal: input.signal,
-        redirect: 'error',
-      });
-      const declared = response.headers.get('content-length');
-      if (declared !== null && (!/^(?:0|[1-9][0-9]{0,15})$/u.test(declared) || Number(declared) > input.maximumResponseBytes)) throw new TypeError('ai_provider_response_too_large');
-      if (response.body === null) throw new TypeError('ai_provider_response_empty');
+      const response = await fetchResponse(input);
       const chunks: Uint8Array[] = [];
       let total = 0;
-      const reader = response.body.getReader();
+      const reader = response.body!.getReader();
       try {
         while (true) {
           const next = await reader.read();
@@ -58,12 +81,28 @@ export function createBoundedAiHttpTransport(fetcher: typeof globalThis.fetch = 
       const body = new Uint8Array(total);
       let offset = 0;
       for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.byteLength; }
-      const responseHeaders = Object.freeze(Object.fromEntries(
-        ['dg-char-count', 'dg-model-name', 'dg-model-uuid', 'dg-request-id']
-          .map((name) => [name, response.headers.get(name)] as const)
-          .filter((entry): entry is readonly [string, string] => entry[1] !== null),
-      ));
-      return Object.freeze({ status: response.status, contentType: response.headers.get('content-type') ?? '', body, responseHeaders });
+      return Object.freeze({ status: response.status, contentType: response.headers.get('content-type') ?? '', body, responseHeaders: responseHeaders(response) });
+    },
+    async stream(input: Parameters<NonNullable<AiHttpTransport['stream']>>[0]): Promise<Readonly<AiHttpStreamResponse>> {
+      const response = await fetchResponse(input);
+      const body = response.body!;
+      async function* chunks() {
+        const reader = body.getReader();
+        let total = 0;
+        try {
+          while (true) {
+            const next = await reader.read();
+            if (next.done) return;
+            total += next.value.byteLength;
+            if (total > input.maximumResponseBytes) {
+              await reader.cancel();
+              throw new TypeError('ai_provider_response_too_large');
+            }
+            yield next.value;
+          }
+        } finally { reader.releaseLock(); }
+      }
+      return Object.freeze({ status: response.status, contentType: response.headers.get('content-type') ?? '', chunks: chunks(), responseHeaders: responseHeaders(response) });
     },
   });
 }
@@ -131,8 +170,49 @@ function finishReason(value: unknown): 'stop' | 'length' | 'tool_calls' {
   throw new TypeError('ai_provider_finish_reason_invalid');
 }
 
-function groundedChat(content: string, request: AiExecutionRequest): Extract<AiExecutionOutput, { kind: 'chat' }> {
-  if (request.input.kind !== 'chat' || request.input.evidence === undefined) return { kind: 'chat', content, finishReason: 'stop' };
+function parseToolCalls(value: unknown): readonly AiToolCall[] {
+  if (!Array.isArray(value) || value.length === 0 || value.length > 64) throw new TypeError('ai_provider_tool_calls_invalid');
+  return Object.freeze(value.map((entry) => {
+    const call = record(entry);
+    const fn = record(call.function);
+    const id = string(call.id, 'tool_call_id', 128);
+    const name = string(fn.name, 'tool_name', 64);
+    const args = typeof fn.arguments === 'string' ? fn.arguments : '';
+    if (call.type !== 'function' || !/^[A-Za-z0-9_-]{1,128}$/u.test(id) || !/^[A-Za-z_][A-Za-z0-9_-]{0,63}$/u.test(name) || args.length > 100_000) throw new TypeError('ai_provider_tool_call_invalid');
+    let parsed: unknown;
+    try { parsed = JSON.parse(args); } catch { throw new TypeError('ai_provider_tool_arguments_invalid'); }
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) throw new TypeError('ai_provider_tool_arguments_invalid');
+    return Object.freeze({ id, type: 'function' as const, function: Object.freeze({ name, arguments: args }) });
+  }));
+}
+
+function validateToolCallsForRequest(calls: readonly AiToolCall[], request: AiExecutionRequest): void {
+  if (request.input.kind !== 'chat' || request.input.tools === undefined || request.input.toolChoice === 'none') throw new TypeError('ai_provider_tool_calls_unexpected');
+  if (request.input.parallelToolCalls === false && calls.length > 1) throw new TypeError('ai_provider_parallel_tool_calls_unexpected');
+  const forcedName = typeof request.input.toolChoice === 'object' ? request.input.toolChoice.function.name : undefined;
+  for (const call of calls) {
+    const tool = request.input.tools.find(({ function: definition }) => definition.name === call.function.name);
+    if (tool === undefined || forcedName !== undefined && call.function.name !== forcedName) throw new TypeError('ai_provider_unknown_tool_call');
+    if (tool.function.strict === true && !validateStrictJsonSchema(tool.function.parameters, JSON.parse(call.function.arguments))) throw new TypeError('ai_provider_tool_schema_validation_failed');
+  }
+}
+
+function parsedStructured(content: string, request: AiExecutionRequest): JsonValue | undefined {
+  if (request.input.kind !== 'chat' || request.input.responseFormat === 'text') return undefined;
+  let parsed: JsonValue;
+  try { parsed = JSON.parse(content) as JsonValue; } catch { throw new TypeError('ai_provider_structured_output_invalid'); }
+  if (request.input.responseFormat === 'json_schema' && !validateStrictJsonSchema(request.input.jsonSchema!.schema, parsed)) throw new TypeError('ai_provider_schema_validation_failed');
+  return parsed;
+}
+
+function chatOutput(content: string, request: AiExecutionRequest, reason: 'stop' | 'length' | 'tool_calls', toolCalls?: readonly AiToolCall[]): Extract<AiExecutionOutput, { kind: 'chat' }> {
+  if (request.input.kind !== 'chat') throw new TypeError('ai_provider_chat_request_invalid');
+  const structured = parsedStructured(content, request);
+  if (request.input.evidence === undefined) return {
+    kind: 'chat', content, finishReason: reason,
+    ...(toolCalls === undefined ? {} : { toolCalls }),
+    ...(structured === undefined ? {} : { structured }),
+  };
   let parsed: Record<string, unknown>;
   try { parsed = record(JSON.parse(content)); } catch { throw new TypeError('ai_provider_grounded_output_invalid'); }
   const claimsValue = parsed.claims;
@@ -142,46 +222,91 @@ function groundedChat(content: string, request: AiExecutionRequest): Extract<AiE
     if (!Array.isArray(claim.citationIds)) throw new TypeError('ai_provider_grounded_output_invalid');
     return { text: string(claim.text, 'claim', 100_000), citationIds: claim.citationIds.map((id) => string(id, 'citation_id', 80)) };
   });
-  return { kind: 'chat', content: claims.map(({ text: claim }) => claim).join('\n'), finishReason: 'stop', claims };
+  return { kind: 'chat', content: claims.map(({ text: claim }) => claim).join('\n'), finishReason: reason, claims };
 }
 
 function parseChatJson(response: Record<string, unknown>, request: AiExecutionRequest): { model: string; usage: AiUsage; output: Extract<AiExecutionOutput, { kind: 'chat' }> } {
   if (!Array.isArray(response.choices) || response.choices.length !== 1) throw new TypeError('ai_provider_choices_invalid');
   const choice = record(response.choices[0]);
   const message = record(choice.message);
-  const output = groundedChat(string(message.content, 'chat_content'), request);
-  output.finishReason = finishReason(choice.finish_reason);
+  const reason = finishReason(choice.finish_reason);
+  const toolCalls = message.tool_calls === undefined ? undefined : parseToolCalls(message.tool_calls);
+  if (toolCalls !== undefined) validateToolCallsForRequest(toolCalls, request);
+  const content = message.content === null && toolCalls !== undefined ? '' : typeof message.content === 'string' ? message.content : (() => { throw new TypeError('ai_provider_chat_content_invalid'); })();
+  if (content.length > 1_000_000 || reason === 'tool_calls' !== (toolCalls !== undefined)) throw new TypeError('ai_provider_chat_content_invalid');
+  const output = chatOutput(content, request, reason, toolCalls);
   return { model: string(response.model, 'model', 160), usage: usageFrom(response.usage, request), output };
 }
 
-function parseChatStream(bytes: Uint8Array, request: AiExecutionRequest): { model: string; usage: AiUsage; output: Extract<AiExecutionOutput, { kind: 'chat' }> } {
-  const source = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+async function parseChatStream(chunks: AsyncIterable<Uint8Array>, request: AiExecutionRequest, onEvent?: (event: AiAdapterStreamEvent) => void): Promise<{ model: string; usage: AiUsage; output: Extract<AiExecutionOutput, { kind: 'chat' }> }> {
+  const decoder = new TextDecoder('utf-8', { fatal: true });
+  let pending = '';
   let model: string | undefined;
   let content = '';
   let reason: 'stop' | 'length' | 'tool_calls' | undefined;
   let observedUsage: AiUsage | undefined;
-  for (const line of source.split(/\r?\n/u)) {
-    if (!line.startsWith('data:')) continue;
+  const toolParts = new Map<number, { id: string; name: string; arguments: string }>();
+  const processLine = (line: string) => {
+    if (!line.startsWith('data:')) return;
     const data = line.slice(5).trim();
-    if (data === '' || data === '[DONE]') continue;
+    if (data === '' || data === '[DONE]') return;
     const event = record(JSON.parse(data));
-    if (event.model !== undefined) model = string(event.model, 'model', 160);
-    if (event.usage !== undefined) observedUsage = usageFrom(event.usage, request);
+    if (event.model !== undefined) {
+      const nextModel = string(event.model, 'model', 160);
+      if (model !== undefined && model !== nextModel) throw new TypeError('ai_provider_stream_model_changed');
+      if (model === undefined) { model = nextModel; onEvent?.(Object.freeze({ type: 'response.started', modelIdentity: model })); }
+    }
+    if (event.usage !== undefined && event.usage !== null) {
+      observedUsage = usageFrom(event.usage, request);
+      onEvent?.(Object.freeze({ type: 'usage', usage: observedUsage }));
+    }
     if (Array.isArray(event.choices) && event.choices.length > 0) {
       const choice = record(event.choices[0]);
       if (choice.delta !== undefined) {
         const delta = record(choice.delta);
-        if (delta.content !== undefined) {
+        if (delta.content !== undefined && delta.content !== null) {
           if (typeof delta.content !== 'string' || delta.content.length > 1_000_000) throw new TypeError('ai_provider_chat_delta_invalid');
           content += delta.content;
+          if (content.length > 1_000_000) throw new TypeError('ai_provider_chat_delta_invalid');
+          if (delta.content.length > 0) onEvent?.(Object.freeze({ type: 'text.delta', text: delta.content }));
+        }
+        if (delta.tool_calls !== undefined) {
+          if (!Array.isArray(delta.tool_calls)) throw new TypeError('ai_provider_tool_delta_invalid');
+          for (const raw of delta.tool_calls) {
+            const tool = record(raw);
+            const index = integer(tool.index, 'tool_index');
+            const prior = toolParts.get(index) ?? { id: '', name: '', arguments: '' };
+            const fn = tool.function === undefined ? {} : record(tool.function);
+            const id = tool.id === undefined ? '' : string(tool.id, 'tool_call_id', 128);
+            const name = fn.name === undefined ? '' : string(fn.name, 'tool_name', 64);
+            const argumentsDelta = fn.arguments === undefined ? '' : typeof fn.arguments === 'string' ? fn.arguments : (() => { throw new TypeError('ai_provider_tool_delta_invalid'); })();
+            if (prior.id !== '' && id !== '' && prior.id !== id || prior.name !== '' && name !== '' && prior.name !== name) throw new TypeError('ai_provider_tool_delta_changed');
+            const next = { id: prior.id || id, name: prior.name || name, arguments: prior.arguments + argumentsDelta };
+            if (next.arguments.length > 100_000) throw new TypeError('ai_provider_tool_delta_invalid');
+            toolParts.set(index, next);
+            onEvent?.(Object.freeze({ type: 'tool_call.delta', index, ...(id === '' ? {} : { id }), ...(name === '' ? {} : { name }), ...(argumentsDelta === '' ? {} : { argumentsDelta }) }));
+          }
         }
       }
-      if (choice.finish_reason !== undefined && choice.finish_reason !== null) reason = finishReason(choice.finish_reason);
+      if (choice.finish_reason !== undefined && choice.finish_reason !== null) {
+        reason = finishReason(choice.finish_reason);
+        onEvent?.(Object.freeze({ type: 'response.completed', finishReason: reason }));
+      }
     }
+  };
+  for await (const chunk of chunks) {
+    pending += decoder.decode(chunk, { stream: true });
+    const lines = pending.split(/\r?\n/u);
+    pending = lines.pop() ?? '';
+    for (const line of lines) processLine(line);
   }
+  pending += decoder.decode();
+  if (pending.length > 0) processLine(pending);
   if (model === undefined || observedUsage === undefined || reason === undefined) throw new TypeError('ai_provider_stream_incomplete');
-  const output = groundedChat(content, request);
-  output.finishReason = reason;
+  const toolCalls = toolParts.size === 0 ? undefined : parseToolCalls([...toolParts.entries()].sort(([a], [b]) => a - b).map(([, value]) => ({ id: value.id, type: 'function', function: { name: value.name, arguments: value.arguments } })));
+  if (toolCalls !== undefined) validateToolCallsForRequest(toolCalls, request);
+  if (reason === 'tool_calls' !== (toolCalls !== undefined)) throw new TypeError('ai_provider_stream_tool_calls_invalid');
+  const output = chatOutput(content, request, reason, toolCalls);
   return { model, usage: observedUsage, output };
 }
 
@@ -202,13 +327,24 @@ function requestPayload(request: AiExecutionRequest, config: Readonly<OpenAiComp
   const model = config.exactModelId;
   if (request.input.kind === 'chat') return {
     model,
-    messages: request.input.messages as unknown as JsonValue,
+    messages: request.input.messages.map(({ toolCallId, toolCalls, ...message }) => ({
+      ...message,
+      ...(toolCallId === undefined ? {} : { tool_call_id: toolCallId }),
+      ...(toolCalls === undefined ? {} : { tool_calls: toolCalls }),
+    })) as unknown as JsonValue,
     stream: request.input.stream,
     max_completion_tokens: request.usageBounds.outputTokens + request.usageBounds.reasoningTokens,
-    ...(config.reasoningEffort === undefined ? {} : { reasoning_effort: config.reasoningEffort }),
+    ...((request.input.reasoningEffort ?? config.reasoningEffort) === undefined ? {} : { reasoning_effort: request.input.reasoningEffort ?? config.reasoningEffort! }),
     ...(config.reasoningFormat === undefined ? {} : { reasoning_format: config.reasoningFormat }),
     ...(request.input.stream ? { stream_options: { include_usage: true } } : {}),
-    ...(request.input.responseFormat === 'json_object' || request.input.evidence !== undefined ? { response_format: { type: 'json_object' } } : {}),
+    ...(request.input.tools === undefined ? {} : { tools: request.input.tools as unknown as JsonValue }),
+    ...(request.input.toolChoice === undefined ? {} : { tool_choice: request.input.toolChoice as unknown as JsonValue }),
+    ...(request.input.parallelToolCalls === undefined ? {} : { parallel_tool_calls: request.input.parallelToolCalls }),
+    ...(request.input.responseFormat === 'json_schema'
+      ? { response_format: { type: 'json_schema', json_schema: request.input.jsonSchema as unknown as JsonValue } }
+      : request.input.responseFormat === 'json_object' || request.input.evidence !== undefined
+        ? { response_format: { type: 'json_object' } }
+        : {}),
   };
   if (request.input.kind === 'embedding') return { model, input: request.input.inputs as unknown as JsonValue, ...(request.input.dimensions === undefined ? {} : { dimensions: request.input.dimensions }) };
   if (request.input.kind === 'image') return { model, prompt: request.input.prompt, size: request.input.size, quality: request.input.quality, n: request.input.count, response_format: 'b64_json' };
@@ -255,31 +391,48 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
     this.#clock = input.clock ?? (() => new Date().toISOString());
   }
 
-  async execute(input: Readonly<{ request: AiExecutionRequest; exactModelId: string; signal: AbortSignal }>): Promise<Readonly<AiAdapterExecution>> {
+  async execute(input: Readonly<{ request: AiExecutionRequest; exactModelId: string; signal: AbortSignal; onEvent?: (event: AiAdapterStreamEvent) => void }>): Promise<Readonly<AiAdapterExecution>> {
     if (input.exactModelId !== this.#config.exactModelId || input.request.productId !== this.#config.productId) throw new TypeError('ai_provider_request_binding_invalid');
     let credential: string;
     try { credential = await this.#secret(this.#config.secretName); }
     catch { throw new TypeError('ai_provider_credential_unavailable'); }
     if (credential.length < 8 || credential.length > 8_192 || /[\r\n]/u.test(credential)) throw new TypeError('ai_provider_credential_invalid');
     const body = new TextEncoder().encode(JSON.stringify(requestPayload(input.request, this.#config)));
+    const headers = Object.freeze({ authorization: `Bearer ${credential}`, 'content-type': 'application/json', accept: input.request.input.kind === 'chat' && input.request.input.stream ? 'text/event-stream' : '*/*' });
+    if (input.request.input.kind === 'chat' && input.request.input.stream && input.onEvent !== undefined) {
+      if (this.#transport.stream === undefined) throw new TypeError('ai_provider_true_streaming_unavailable');
+      try {
+        const streamed = await this.#transport.stream({ url: this.#endpoint.href, headers, body, signal: input.signal, maximumResponseBytes: this.#config.maximumResponseBytes });
+        if (streamed.status < 200 || streamed.status >= 300) throw Object.assign(new TypeError(`ai_provider_http_${streamed.status}`), { supplierStatus: streamed.status, retryAfter: streamed.responseHeaders?.['retry-after'] });
+        if (streamed.contentType.split(';')[0]?.trim().toLowerCase() !== 'text/event-stream') throw new TypeError('ai_provider_stream_content_type_invalid');
+        const parsed = await parseChatStream(streamed.chunks, input.request, input.onEvent);
+        return Object.freeze({ modelIdentity: parsed.model, completedAt: this.#clock(), usage: Object.freeze(parsed.usage), output: Object.freeze(parsed.output) });
+      } catch (error) {
+        if (error instanceof TypeError && error.message.startsWith('ai_provider_')) throw error;
+        throw new TypeError('ai_provider_transport_failed');
+      }
+    }
     let response: Readonly<AiHttpResponse>;
     try {
       response = await this.#transport.request({
         url: this.#endpoint.href,
-        headers: Object.freeze({ authorization: `Bearer ${credential}`, 'content-type': 'application/json', accept: input.request.input.kind === 'chat' && input.request.input.stream ? 'text/event-stream' : '*/*' }),
+        headers,
         body,
         signal: input.signal,
         maximumResponseBytes: this.#config.maximumResponseBytes,
       });
     } catch { throw new TypeError('ai_provider_transport_failed'); }
-    if (response.status < 200 || response.status >= 300 || response.body.byteLength === 0 || response.body.byteLength > this.#config.maximumResponseBytes) throw new TypeError('ai_provider_http_failed');
+    if (response.status < 200 || response.status >= 300) throw Object.assign(new TypeError(`ai_provider_http_${response.status}`), { supplierStatus: response.status, retryAfter: response.responseHeaders?.['retry-after'] });
+    if (response.body.byteLength === 0 || response.body.byteLength > this.#config.maximumResponseBytes) throw new TypeError('ai_provider_http_failed');
     const mediaType = response.contentType.split(';')[0]?.trim().toLowerCase();
     if (input.request.input.kind === 'chat' && input.request.input.stream) {
       if (mediaType !== 'text/event-stream') throw new TypeError('ai_provider_content_type_invalid');
     } else if (input.request.input.kind !== 'speech' && mediaType !== 'application/json') throw new TypeError('ai_provider_content_type_invalid');
     try {
       if (input.request.input.kind === 'chat') {
-        const parsed = input.request.input.stream ? parseChatStream(response.body, input.request) : parseChatJson(parseJson(response.body), input.request);
+        const parsed = input.request.input.stream
+          ? await parseChatStream((async function* () { yield response.body; })(), input.request)
+          : parseChatJson(parseJson(response.body), input.request);
         return Object.freeze({ modelIdentity: parsed.model, completedAt: this.#clock(), usage: Object.freeze(parsed.usage), output: Object.freeze(parsed.output) });
       }
       if (input.request.input.kind === 'embedding') {
@@ -335,6 +488,9 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
       const stored = await this.#artifacts.put({ bytes: response.body, mimeType: expectedMime });
       if (stored.sha256 !== sha256(response.body)) throw new TypeError('ai_provider_artifact_hash_invalid');
       return Object.freeze({ modelIdentity: input.exactModelId, completedAt: this.#clock(), usage: Object.freeze({ ...({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 }), audioCharacters: input.request.input.input.length }), output: Object.freeze({ kind: 'speech', artifact: Object.freeze({ ...stored, mimeType: expectedMime, bytes: response.body.byteLength }) }) });
-    } catch { throw new TypeError('ai_provider_response_invalid'); }
+    } catch (error) {
+      if (error instanceof TypeError && /^ai_provider_/u.test(error.message)) throw error;
+      throw new TypeError('ai_provider_response_invalid');
+    }
   }
 }

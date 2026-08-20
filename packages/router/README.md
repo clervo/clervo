@@ -86,7 +86,7 @@ controls. Select only a stable ID published by the live catalog:
 
 ```
 clervo catalog --models
-clervo run ai.chat "Reply with ready" --model clervo/gpt-5.6-luna
+clervo run ai.chat "Reply with ready" --model clervo/gpt-oss-20b
 ```
 
 The catalog includes chat, embedding, image, speech, video, music, and virtual

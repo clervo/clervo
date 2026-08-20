@@ -20,7 +20,7 @@ const baseUsage = { inputTokens: 1000, cachedInputTokens: 100, outputTokens: 500
 const basePricing = { currency: 'USD', decimals: 6, inputTokenMicrosPerMillion: 1_000_000, cachedInputTokenMicrosPerMillion: 100_000, outputTokenMicrosPerMillion: 2_000_000, reasoningTokenMicrosPerMillion: 2_000_000, imageMicrosEach: 10_000, audioMicrosPerThousandCharacters: 2_000 };
 
 function definition({ suffix, family, model, capabilities, products = ['ai.chat'] }) {
-  const checks = [...aiQualificationCheckNames, ...(capabilities.includes('streaming') ? ['streaming'] : []), ...(capabilities.includes('structured_output') ? ['structured_output'] : [])].map((name) => ({ name, status: 'passed', evidenceHash: 'sha256:1111111111111111111111111111111111111111111111111111111111111111' }));
+  const checks = [...aiQualificationCheckNames, ...(capabilities.includes('streaming') ? ['streaming'] : []), ...(capabilities.includes('structured_output') ? ['structured_output'] : []), ...(capabilities.includes('strict_schema') ? ['strict_schema'] : []), ...(capabilities.includes('tool_calling') ? ['tool_calling'] : []), ...(capabilities.includes('parallel_tool_calling') ? ['parallel_tool_calling'] : [])].map((name) => ({ name, status: 'passed', evidenceHash: 'sha256:1111111111111111111111111111111111111111111111111111111111111111' }));
   const qualification = createAiRouteQualification({
     qualificationId: `aiqual_01K0${suffix}QUALIFICATION0001`, routeId: `ai.route.${suffix.toLowerCase()}`, providerId: `provider.${suffix.toLowerCase()}`, supplyFamilyId: family, exactModelId: model, productIds: products,
     checkedAt: '2026-08-01T23:30:00.000Z', expiresAt: '2026-08-08T23:30:00.000Z', termsStatus: 'approved', resaleAllowed: true, checks,

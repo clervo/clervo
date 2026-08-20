@@ -62,6 +62,7 @@
     "routeFamilies": "qualified_ai_supply_catalog",
     "baseUrl": "https://ai.clervo.dev/v1/",
     "clervoSecret": "clervo-production-ai-api-key",
+    "groqSecret": "clervo-production-groq-api-key",
     "artifacts": {
       "mode": "r2",
       "bucket": "clervo-artifacts",

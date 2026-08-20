@@ -58,7 +58,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
   await new Promise((resolve) => server.once('listening', resolve));
   context.after(() => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())));
   const origin = `http://127.0.0.1:${server.address().port}`;
-  for (const [alias, exact] of [['clervo/fast', 'clervo/gpt-5.6-luna'], ['clervo/smart', 'clervo/gpt-5.6-terra'], ['clervo/code', 'clervo/gpt-5.6-sol'], ['clervo/deep', 'clervo/gpt-5.6-sol']]) {
+  for (const [alias, exact] of [['clervo/fast', 'clervo/gpt-oss-20b'], ['clervo/smart', 'clervo/gpt-oss-120b'], ['clervo/code', 'clervo/kimi-k2.7-code'], ['clervo/deep', 'clervo/gpt-oss-120b']]) {
     const normalized = normalizeAiHttpRequest({ model: alias, input: { kind: 'chat', messages: [{ role: 'user', content: 'Alias contract' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 });
     const quote = runtime.publicPricing.quote({ normalized, operationId: `op_${alias.slice('clervo/'.length).padEnd(32, '0')}`, now: observedAt });
     assert.equal(quote.decision.selectedExactModelId, exact);
@@ -125,7 +125,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.equal((await quotaExceeded.json()).automaticPaidOverageAllowed, false);
   assert.equal(executions, 1);
 
-  const paidBody = JSON.stringify({ model: 'clervo/gpt-5.6-luna', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 });
+  const paidBody = JSON.stringify({ model: 'clervo/gpt-oss-120b', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 });
   const paid = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeHeaders, body: paidBody });
   assert.equal(paid.status, 402);
   assert.match(paid.headers.get('idempotency-key'), /^srv\.ai\./u);
@@ -139,14 +139,14 @@ test('one AI endpoint executes free models without payment and challenges paid m
   });
   assert.equal(unknown.status, 404);
   assert.equal((await unknown.json()).code, 'ai_model_not_found');
-  const unavailableModel = runtime.productCatalog.publicModels.find(({ publicSellable, productIds }) => !publicSellable && productIds.includes('ai.chat'));
+  const unavailableModel = runtime.productCatalog.publicModels.find(({ modelId }) => modelId === 'clervo/gpt-5.6-luna');
   assert.ok(unavailableModel);
   const unavailable = await fetch(`${origin}/v1/ai/execute`, {
     method: 'POST', headers: edgeHeaders,
     body: JSON.stringify({ model: unavailableModel.modelId, input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 }),
   });
   assert.equal(unavailable.status, 422);
-  assert.equal((await unavailable.json()).code, 'ai_model_unavailable');
+  assert.equal((await unavailable.json()).code, 'ai_model_temporarily_unavailable');
   const malformed = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeHeaders, body: '{}' });
   assert.equal(malformed.status, 400);
   assert.equal(challenges, 3);

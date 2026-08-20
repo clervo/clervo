@@ -4,6 +4,7 @@ import {
   canonicalRequestHash,
   normalizeAiHttpRequest,
 } from '../../../dist/packages/contracts/src/index.js';
+import { assertSupportedStrictJsonSchema } from '../../../dist/services/ai/src/json-schema.js';
 import { resolveCompatibilityModel } from './compatibility-model-map.mjs';
 
 export const OPENAI_CHAT_COMPLETIONS_PATH = '/v1/chat/completions';
@@ -17,6 +18,7 @@ function assertDefault(value, expected, code) {
 }
 
 function normalizeContent(content) {
+  if (content === null) return null;
   if (typeof content === 'string') return content;
   if (!Array.isArray(content) || content.length === 0) {
     refuse('openai_chat_message_content_invalid');
@@ -55,6 +57,11 @@ function normalizeContent(content) {
   });
 }
 
+function normalizeToolCall(call) {
+  if (call === null || typeof call !== 'object' || Array.isArray(call) || call.type !== 'function' || typeof call.id !== 'string' || call.function === null || typeof call.function !== 'object' || Array.isArray(call.function) || typeof call.function.name !== 'string' || typeof call.function.arguments !== 'string') refuse('openai_chat_tool_call_invalid');
+  return { id: call.id, type: 'function', function: { name: call.function.name, arguments: call.function.arguments } };
+}
+
 function normalizeMessage(message) {
   if (
     message === null
@@ -64,7 +71,7 @@ function normalizeMessage(message) {
     refuse('openai_chat_message_invalid');
   }
 
-  const allowed = new Set(['role', 'content', 'name']);
+  const allowed = new Set(['role', 'content', 'name', 'tool_calls', 'tool_call_id', 'refusal']);
   if (Object.keys(message).some((key) => !allowed.has(key))) {
     refuse('openai_chat_message_property_unsupported', 422);
   }
@@ -72,9 +79,10 @@ function normalizeMessage(message) {
   let role = message.role;
   if (role === 'developer') role = 'system';
 
-  if (!['system', 'user', 'assistant'].includes(role)) {
+  if (!['system', 'user', 'assistant', 'tool'].includes(role)) {
     refuse('openai_chat_role_unsupported', 422);
   }
+  if (message.refusal !== undefined && message.refusal !== null) refuse('openai_chat_refusal_unsupported', 422);
 
   if (
     message.name !== undefined
@@ -83,14 +91,38 @@ function normalizeMessage(message) {
     refuse('openai_chat_message_name_invalid');
   }
 
+  if (message.tool_calls !== undefined && (!Array.isArray(message.tool_calls) || message.tool_calls.length === 0 || role !== 'assistant')) refuse('openai_chat_tool_calls_invalid');
+  if (message.tool_call_id !== undefined && (typeof message.tool_call_id !== 'string' || role !== 'tool')) refuse('openai_chat_tool_call_id_invalid');
+  const content = normalizeContent(message.content);
+  if (content === null && (role !== 'assistant' || message.tool_calls === undefined)) refuse('openai_chat_message_content_invalid');
   return {
     role,
-    content: normalizeContent(message.content),
+    content,
+    ...(message.name === undefined ? {} : { name: message.name }),
+    ...(message.tool_calls === undefined ? {} : { toolCalls: message.tool_calls.map(normalizeToolCall) }),
+    ...(message.tool_call_id === undefined ? {} : { toolCallId: message.tool_call_id }),
   };
 }
 
+function normalizeTool(tool) {
+  if (tool === null || typeof tool !== 'object' || Array.isArray(tool) || tool.type !== 'function' || tool.function === null || typeof tool.function !== 'object' || Array.isArray(tool.function)) refuse('openai_chat_tool_invalid');
+  const fn = tool.function;
+  const allowed = new Set(['name', 'description', 'parameters', 'strict']);
+  if (Object.keys(fn).some((key) => !allowed.has(key)) || typeof fn.name !== 'string' || fn.parameters === null || typeof fn.parameters !== 'object' || Array.isArray(fn.parameters)) refuse('openai_chat_tool_invalid');
+  if (fn.strict === true) assertSupportedStrictJsonSchema(fn.parameters);
+  else if (fn.strict !== undefined && fn.strict !== false) refuse('openai_chat_tool_strict_invalid');
+  return { type: 'function', function: { name: fn.name, ...(fn.description === undefined ? {} : { description: fn.description }), parameters: structuredClone(fn.parameters), ...(fn.strict === undefined ? {} : { strict: fn.strict }) } };
+}
+
+function normalizeToolChoice(value) {
+  if (value === undefined) return 'auto';
+  if (['auto', 'none', 'required'].includes(value)) return value;
+  if (value === null || typeof value !== 'object' || Array.isArray(value) || value.type !== 'function' || value.function === null || typeof value.function !== 'object' || Array.isArray(value.function) || typeof value.function.name !== 'string') refuse('openai_chat_tool_choice_invalid');
+  return { type: 'function', function: { name: value.function.name } };
+}
+
 function responseFormat(value) {
-  if (value === undefined) return 'text';
+  if (value === undefined) return { responseFormat: 'text' };
 
   if (
     value === null
@@ -101,8 +133,14 @@ function responseFormat(value) {
     refuse('openai_chat_response_format_invalid');
   }
 
-  if (value.type === 'text') return 'text';
-  if (value.type === 'json_object') return 'json_object';
+  if (value.type === 'text') return { responseFormat: 'text' };
+  if (value.type === 'json_object') return { responseFormat: 'json_object' };
+  if (value.type === 'json_schema') {
+    const format = value.json_schema;
+    if (format === null || typeof format !== 'object' || Array.isArray(format) || typeof format.name !== 'string' || format.strict !== true || format.schema === null || typeof format.schema !== 'object' || Array.isArray(format.schema)) refuse('openai_chat_json_schema_invalid');
+    assertSupportedStrictJsonSchema(format.schema);
+    return { responseFormat: 'json_schema', jsonSchema: { name: format.name, ...(format.description === undefined ? {} : { description: format.description }), schema: structuredClone(format.schema), strict: true } };
+  }
 
   refuse('openai_chat_response_format_unsupported', 422);
 }
@@ -132,6 +170,11 @@ export function normalizeOpenAiChatCompletionRequest(value) {
     'seed',
     'logprobs',
     'top_logprobs',
+    'tools',
+    'tool_choice',
+    'parallel_tool_calls',
+    'reasoning_effort',
+    'stream_options',
   ]);
 
   if (Object.keys(value).some((key) => !allowed.has(key))) {
@@ -174,13 +217,22 @@ export function normalizeOpenAiChatCompletionRequest(value) {
 
   const maximumOutputTokens =
     value.max_completion_tokens ?? value.max_tokens;
+  if (value.tools !== undefined && !Array.isArray(value.tools)) refuse('openai_chat_tools_invalid');
+  const tools = (value.tools ?? []).map(normalizeTool);
+  const toolChoice = normalizeToolChoice(value.tool_choice);
+  if (value.parallel_tool_calls !== undefined && typeof value.parallel_tool_calls !== 'boolean') refuse('openai_chat_parallel_tool_calls_invalid');
+  if (value.reasoning_effort !== undefined && !['none', 'low', 'medium', 'high'].includes(value.reasoning_effort)) refuse('openai_chat_reasoning_effort_invalid');
+  if (value.stream_options !== undefined && (value.stream_options === null || typeof value.stream_options !== 'object' || Array.isArray(value.stream_options) || value.stream_options.include_usage !== true || Object.keys(value.stream_options).some((key) => key !== 'include_usage'))) refuse('openai_chat_stream_options_invalid');
+  const format = responseFormat(value.response_format);
 
   return normalizeAiHttpRequest({
     model: resolveCompatibilityModel(value.model),
     input: {
       kind: 'chat',
       messages: value.messages.map(normalizeMessage),
-      responseFormat: responseFormat(value.response_format),
+      ...format,
+      ...(tools.length === 0 ? {} : { tools, toolChoice, parallelToolCalls: value.parallel_tool_calls === true }),
+      ...(value.reasoning_effort === undefined ? {} : { reasoningEffort: value.reasoning_effort }),
       stream: value.stream === true,
     },
     ...(maximumOutputTokens === undefined
@@ -359,7 +411,8 @@ export function createOpenAiChatCompletion(value) {
         index: 0,
         message: {
           role: 'assistant',
-          content: output.content,
+          content: output.finishReason === 'tool_calls' && output.content.length === 0 ? null : output.content,
+          ...(output.toolCalls === undefined ? {} : { tool_calls: output.toolCalls }),
           refusal: null,
         },
         logprobs: null,
@@ -408,7 +461,7 @@ export function createOpenAiChatStream(value) {
         finish_reason: null,
       }],
     },
-    ...(choice.message.content.length === 0
+    ...(typeof choice.message.content !== 'string' || choice.message.content.length === 0
       ? []
       : [{
           ...common,
@@ -431,6 +484,11 @@ export function createOpenAiChatStream(value) {
       }],
     },
   ];
+
+  if (choice.message.tool_calls !== undefined) chunks.splice(1, 0, ...choice.message.tool_calls.map((call, index) => ({
+    ...common,
+    choices: [{ index: 0, delta: { tool_calls: [{ index, ...call }] }, logprobs: null, finish_reason: null }],
+  })));
 
   return `${chunks.map(openAiChatSseData).join('')}data: [DONE]\n\n`;
 }

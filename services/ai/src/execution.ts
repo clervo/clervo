@@ -16,10 +16,18 @@ import type { AiExecutionMonitor, AiExecutionMonitoringEvent } from './monitorin
 
 export interface AiAdapterExecution {
   modelIdentity: string;
+  providerModelIdentity?: string;
   completedAt: string;
   usage: AiUsage;
   output: AiExecutionOutput;
 }
+
+export type AiAdapterStreamEvent =
+  | Readonly<{ type: 'response.started'; modelIdentity: string; providerModelIdentity?: string }>
+  | Readonly<{ type: 'text.delta'; text: string }>
+  | Readonly<{ type: 'tool_call.delta'; index: number; id?: string; name?: string; argumentsDelta?: string }>
+  | Readonly<{ type: 'usage'; usage: AiUsage }>
+  | Readonly<{ type: 'response.completed'; finishReason: 'stop' | 'length' | 'tool_calls' }>;
 
 export interface AiExecutionAdapter {
   readonly routeId: string;
@@ -30,6 +38,7 @@ export interface AiExecutionAdapter {
     runtimeModelId?: string;
     routeId?: string;
     signal: AbortSignal;
+    onEvent?: (event: AiAdapterStreamEvent) => void;
   }>): Promise<Readonly<AiAdapterExecution>>;
 }
 
@@ -58,7 +67,11 @@ function requiredCapabilities(request: AiExecutionRequest) {
     'text_output' as const,
     ...(request.input.messages.some(({ content }) => Array.isArray(content) && content.some((part) => part.type === 'image_url')) ? ['image_input' as const] : []),
     ...(request.input.stream ? ['streaming' as const] : []),
-    ...(request.input.responseFormat === 'json_object' ? ['structured_output' as const] : []),
+    ...(request.input.responseFormat !== 'text' ? ['structured_output' as const] : []),
+    ...(request.input.responseFormat === 'json_schema' ? ['strict_schema' as const] : []),
+    ...((request.input.tools?.length ?? 0) > 0 ? ['tool_calling' as const] : []),
+    ...(request.input.parallelToolCalls === true && (request.input.tools?.length ?? 0) > 0 ? ['parallel_tool_calling' as const] : []),
+    ...(request.input.reasoningEffort !== undefined && request.input.reasoningEffort !== 'none' ? ['reasoning' as const] : []),
   ];
   if (request.input.kind === 'embedding') return ['text_input' as const, 'embedding_output' as const];
   if (request.input.kind === 'image') return ['text_input' as const, 'image_output' as const];
@@ -87,6 +100,7 @@ export async function executeAiOperation(input: {
   signal?: AbortSignal;
   clock?: () => number;
   monitor?: AiExecutionMonitor;
+  onEvent?: (event: AiAdapterStreamEvent) => void;
 }): Promise<Readonly<AiOperationOutcome>> {
   assertAiExecutionRequest(input.request);
   if (Date.parse(input.startedAt) >= Date.parse(input.request.deadlineAt) || input.signal?.aborted) {
@@ -111,8 +125,8 @@ export async function executeAiOperation(input: {
   }
   const selectedRouteId = decision.selectedRouteId;
   if (selectedRouteId === undefined) throw new TypeError('ai_selected_route_missing');
-  const adapter = input.adapters.find((candidate) => candidate.routeId === selectedRouteId || candidate.supportsRoute?.(selectedRouteId) === true);
-  if (adapter === undefined) {
+  const candidateAdapters = input.adapters.filter((candidate) => candidate.routeId === selectedRouteId || candidate.supportsRoute?.(selectedRouteId) === true);
+  if (candidateAdapters.length === 0) {
     monitor(input.monitor, { occurredAt: input.startedAt, operationId: input.request.operationId, productId: input.request.productId, outcome: 'execution_failed', routeId: selectedRouteId });
     return failed('adapter_missing');
   }
@@ -130,14 +144,35 @@ export async function executeAiOperation(input: {
   let timer: NodeJS.Timeout | undefined;
   try {
     const timeout = new Promise<never>((_, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error('deadline_exceeded')); }, remainingMs); });
-    const execution = await Promise.race([adapter.execute({ request: input.request, exactModelId: decision.selectedExactModelId!, runtimeModelId, routeId: selectedRouteId, signal: controller.signal }), timeout]);
-    if (execution.modelIdentity !== runtimeModelId) {
-      monitor(input.monitor, { occurredAt: input.startedAt, operationId: input.request.operationId, productId: input.request.productId, outcome: 'execution_failed', routeId: selectedRouteId });
-      return failed('model_identity_mismatch');
+    const maximumAttempts = decision.maximumSupplierCost?.amountAtomic === '0' ? Math.min(3, candidateAdapters.length) : 1;
+    let execution: Readonly<AiAdapterExecution> | undefined;
+    let lastFailure: unknown;
+    for (const adapter of candidateAdapters.slice(0, maximumAttempts)) {
+      let emitted = false;
+      try {
+        const next = await Promise.race([adapter.execute({
+          request: input.request, exactModelId: decision.selectedExactModelId!, runtimeModelId, routeId: selectedRouteId, signal: controller.signal,
+          ...(input.onEvent === undefined ? {} : { onEvent: (event: AiAdapterStreamEvent) => { emitted = true; input.onEvent!(event); } }),
+        }), timeout]);
+        if (next.modelIdentity !== runtimeModelId) {
+          lastFailure = new Error('model_identity_mismatch');
+          if (emitted) return failed('model_identity_mismatch');
+          continue;
+        }
+        execution = next;
+        break;
+      } catch (error) {
+        lastFailure = error;
+        if (emitted || error instanceof Error && error.message === 'deadline_exceeded') throw error;
+      }
+    }
+    if (execution === undefined) {
+      if (lastFailure instanceof Error && lastFailure.message === 'model_identity_mismatch') return failed('model_identity_mismatch');
+      throw lastFailure ?? new Error('adapter_failed');
     }
     try {
       const cost = reconcileAiSupplierCost({ reservedMaximum: decision.maximumSupplierCost!, usage: execution.usage, pricing: runtime.pricing as AiRoutePricing });
-      const result = createAiExecutionResult({ request: input.request, routeDecision: decision, completedAt: execution.completedAt, usage: execution.usage, supplierCost: cost.actual, output: execution.output });
+      const result = createAiExecutionResult({ request: input.request, routeDecision: decision, completedAt: execution.completedAt, usage: execution.usage, supplierCost: cost.actual, output: execution.output, executedModelId: execution.providerModelIdentity ?? execution.modelIdentity });
       monitor(input.monitor, { occurredAt: execution.completedAt, operationId: input.request.operationId, productId: input.request.productId, outcome: 'completed', routeId: selectedRouteId });
       return Object.freeze({ outcome: 'completed', result });
     } catch {

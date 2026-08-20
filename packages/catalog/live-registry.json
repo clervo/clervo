@@ -65,10 +65,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-haiku-4-5-20251001",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -96,10 +96,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-opus-4-6",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -127,10 +127,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-opus-4-7",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -158,10 +158,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-opus-4-8",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -189,10 +189,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-opus-5",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -220,10 +220,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-sonnet-4-6",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -251,10 +251,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/claude-sonnet-5",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -1067,10 +1067,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/gpt-5.6-luna",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -1098,10 +1098,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/gpt-5.6-sol",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -1129,17 +1129,21 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": null,
+      "reason": "temporarily_unavailable",
       "routeId": "clervo/gpt-5.6-terra",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
         "reasoning",
+        "streaming",
+        "strict_schema",
+        "structured_output",
         "text_input",
-        "text_output"
+        "text_output",
+        "tool_calling"
       ],
       "evidence": {
         "aliasRepresentative": false,
@@ -1170,8 +1174,12 @@
     {
       "capabilities": [
         "reasoning",
+        "streaming",
+        "strict_schema",
+        "structured_output",
         "text_input",
-        "text_output"
+        "text_output",
+        "tool_calling"
       ],
       "evidence": {
         "aliasRepresentative": false,
@@ -1193,10 +1201,10 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "availability_degraded",
+      "reason": null,
       "routeId": "clervo/gpt-oss-20b",
-      "sellable": false,
-      "state": "supply_paused",
+      "sellable": true,
+      "state": "live",
       "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
@@ -1356,8 +1364,10 @@
     },
     {
       "capabilities": [
+        "parallel_tool_calling",
         "text_input",
-        "text_output"
+        "text_output",
+        "tool_calling"
       ],
       "evidence": {
         "aliasRepresentative": false,
@@ -3758,8 +3768,8 @@
   },
   "summary": {
     "aiRoutes": {
-      "live": 88,
-      "supply_paused": 1
+      "live": 79,
+      "supply_paused": 10
     },
     "bazaarIndexedResources": 5,
     "bazaarValidResources": 5,

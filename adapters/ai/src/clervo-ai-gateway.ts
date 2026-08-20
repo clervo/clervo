@@ -1,5 +1,6 @@
 import type {
   AiAdapterExecution,
+  AiAdapterStreamEvent,
   AiExecutionAdapter,
 } from '../../../services/ai/src/execution.js';
 import type {
@@ -38,6 +39,7 @@ const aliasReasoningEffort = Object.freeze({
 
 export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
   readonly routeId = 'ai.route.dynamic_gateway';
+  readonly sourceId = 'clervo_ai_gateway';
   readonly #config: Readonly<ClervoAiGatewayAdapterConfig>;
   readonly #transport: AiHttpTransport;
   readonly #secret: (name: string) => Promise<string>;
@@ -68,6 +70,7 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
     runtimeModelId?: string;
     routeId?: string;
     signal: AbortSignal;
+    onEvent?: (event: AiAdapterStreamEvent) => void;
   }>): Promise<Readonly<AiAdapterExecution>> {
     if (input.runtimeModelId === undefined || input.routeId === undefined || !this.supportsRoute(input.routeId)) throw new TypeError('clervo_ai_gateway_binding_invalid');
     const alternateModelIdentity =
@@ -100,6 +103,7 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
       request: input.request,
       exactModelId: input.runtimeModelId,
       signal: input.signal,
+      ...(input.onEvent === undefined ? {} : { onEvent: input.onEvent }),
     });
 
     if (

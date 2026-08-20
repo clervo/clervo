@@ -380,7 +380,7 @@ async function gatewayFunded(credential) {
     const response = await fetch('https://ai.clervo.dev/v1/chat/completions', {
       method: 'POST',
       headers: { authorization: `Bearer ${credential}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-5.6-luna', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], max_tokens: 8 }),
+      body: JSON.stringify({ model: 'clervo/gpt-oss-20b', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], max_tokens: 8 }),
       redirect: 'error',
       signal: AbortSignal.timeout(30_000),
     });

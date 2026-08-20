@@ -97,7 +97,7 @@ test('embeddings retain order and reject malformed numeric vectors', async () =>
   const result = await good.execute({ request: req, exactModelId: 'embed-v1', signal: new AbortController().signal });
   assert.deepEqual(result.output.vectors.map(({ index }) => index), [0, 1]);
   const bad = adapter('ai.embed', 'EMBED', response({ model: 'embed-v1', data: [{ index: 0, embedding: [null] }, { index: 1, embedding: [0.3] }], usage: { prompt_tokens: 3 } })).value;
-  await assert.rejects(() => bad.execute({ request: req, exactModelId: 'embed-v1', signal: new AbortController().signal }), /provider_response_invalid/u);
+  await assert.rejects(() => bad.execute({ request: req, exactModelId: 'embed-v1', signal: new AbortController().signal }), /provider_embedding_invalid/u);
 });
 
 test('image and speech bytes enter only an integrity-checking artifact store', async () => {

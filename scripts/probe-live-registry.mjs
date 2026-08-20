@@ -338,7 +338,7 @@ async function probeClervoGateway() {
   const completion = await observe('supply.clervo_ai_gateway.completion', `${prefix}/chat/completions`, {
     method: 'POST',
     headers: { ...authorization, 'content-type': 'application/json' },
-    body: JSON.stringify({ model: 'gpt-5.6-luna', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], max_tokens: 16 }),
+    body: JSON.stringify({ model: 'clervo/gpt-oss-20b', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], max_tokens: 16 }),
   });
 
   const catalogueReachable = models.status === 200;

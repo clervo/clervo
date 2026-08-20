@@ -167,6 +167,145 @@ function sendSse(response, body, headers = {}) {
   response.end(body);
 }
 
+function compatibilityStreamWriter({ response, protocol, operationId, createdAt, requestedModel }) {
+  let started = false;
+  let model = requestedModel;
+  let sequence = 0;
+  let textBlockStarted = false;
+  let responsesTextStarted = false;
+  const toolBlocks = new Map();
+  const id = operationId.replace(/^op_/u, '');
+  const write = (data, event) => {
+    if (!started) {
+      response.writeHead(200, {
+        'content-type': 'text/event-stream; charset=utf-8',
+        'cache-control': 'no-store, no-transform',
+        'x-accel-buffering': 'no',
+      });
+      response.flushHeaders?.();
+      started = true;
+    }
+    response.write(`${event === undefined ? '' : `event: ${event}\n`}data: ${JSON.stringify(data)}\n\n`);
+  };
+  const commonChat = () => ({ id: `chatcmpl-${id}`, object: 'chat.completion.chunk', created: Math.floor(Date.parse(createdAt) / 1_000), model });
+  return {
+    get started() { return started; },
+    onEvent(event) {
+      if (event.type === 'response.started') {
+        model = event.modelIdentity;
+        if (protocol === 'chat') write({ ...commonChat(), choices: [{ index: 0, delta: { role: 'assistant', content: '' }, logprobs: null, finish_reason: null }] });
+        else if (protocol === 'responses') write({ type: 'response.created', response: { id: `resp_${id}`, object: 'response', created_at: Math.floor(Date.parse(createdAt) / 1_000), status: 'in_progress', model, output: [], usage: null }, sequence_number: sequence++ });
+        else write({ type: 'message_start', message: { id: `msg_${id}`, type: 'message', role: 'assistant', model, content: [], stop_reason: null, stop_sequence: null, usage: { input_tokens: 0, output_tokens: 0 } } }, 'message_start');
+      } else if (event.type === 'text.delta') {
+        if (protocol === 'chat') write({ ...commonChat(), choices: [{ index: 0, delta: { content: event.text }, logprobs: null, finish_reason: null }] });
+        else if (protocol === 'responses') {
+          if (!responsesTextStarted) {
+            write({ type: 'response.output_item.added', output_index: 0, item: { id: `msg_${id}`, type: 'message', status: 'in_progress', role: 'assistant', content: [] }, sequence_number: sequence++ });
+            write({ type: 'response.content_part.added', item_id: `msg_${id}`, output_index: 0, content_index: 0, part: { type: 'output_text', text: '', annotations: [] }, sequence_number: sequence++ });
+            responsesTextStarted = true;
+          }
+          write({ type: 'response.output_text.delta', item_id: `msg_${id}`, output_index: 0, content_index: 0, delta: event.text, sequence_number: sequence++ });
+        }
+        else {
+          if (!textBlockStarted) { write({ type: 'content_block_start', index: 0, content_block: { type: 'text', text: '' } }, 'content_block_start'); textBlockStarted = true; }
+          write({ type: 'content_block_delta', index: 0, delta: { type: 'text_delta', text: event.text } }, 'content_block_delta');
+        }
+      } else if (event.type === 'tool_call.delta') {
+        if (protocol === 'chat') write({ ...commonChat(), choices: [{ index: 0, delta: { tool_calls: [{ index: event.index, ...(event.id === undefined ? {} : { id: event.id, type: 'function' }), function: { ...(event.name === undefined ? {} : { name: event.name }), ...(event.argumentsDelta === undefined ? {} : { arguments: event.argumentsDelta }) } }] }, logprobs: null, finish_reason: null }] });
+        else if (protocol === 'responses') {
+          const current = toolBlocks.get(event.index) ?? { id: event.id ?? `call_${event.index}`, name: event.name ?? '', arguments: '' };
+          if (!toolBlocks.has(event.index)) write({ type: 'response.output_item.added', output_index: event.index, item: { id: current.id, type: 'function_call', status: 'in_progress', call_id: current.id, name: current.name, arguments: '' }, sequence_number: sequence++ });
+          if (event.id !== undefined) current.id = event.id;
+          if (event.name !== undefined) current.name = event.name;
+          if (event.argumentsDelta !== undefined) current.arguments += event.argumentsDelta;
+          toolBlocks.set(event.index, current);
+          if (event.argumentsDelta !== undefined) write({ type: 'response.function_call_arguments.delta', item_id: current.id, output_index: event.index, delta: event.argumentsDelta, sequence_number: sequence++ });
+        }
+        else {
+          if (!toolBlocks.has(event.index) && event.id !== undefined) { toolBlocks.set(event.index, { id: event.id }); write({ type: 'content_block_start', index: event.index, content_block: { type: 'tool_use', id: event.id, name: event.name ?? '', input: {} } }, 'content_block_start'); }
+          if (event.argumentsDelta !== undefined) write({ type: 'content_block_delta', index: event.index, delta: { type: 'input_json_delta', partial_json: event.argumentsDelta } }, 'content_block_delta');
+        }
+      }
+    },
+    finish(value, originalRequest, headers = {}) {
+      if (!started) {
+        const body = protocol === 'chat' ? createOpenAiChatStream(value) : protocol === 'responses' ? createOpenAiResponsesStream(value, originalRequest) : createAnthropicMessageStream(value);
+        sendSse(response, body, headers);
+        return;
+      }
+      if (protocol === 'chat') {
+        const completion = createOpenAiChatCompletion(value);
+        write({ ...commonChat(), choices: [{ index: 0, delta: {}, logprobs: null, finish_reason: completion.choices[0].finish_reason }] });
+        write({ ...commonChat(), choices: [], usage: completion.usage });
+        response.write('data: [DONE]\n\n');
+      } else if (protocol === 'responses') {
+        const completed = createOpenAiResponse(value, originalRequest);
+        if (responsesTextStarted) {
+          const item = completed.output.find((entry) => entry.type === 'message');
+          const text = item?.content?.find((part) => part.type === 'output_text')?.text ?? '';
+          write({ type: 'response.output_text.done', item_id: `msg_${id}`, output_index: 0, content_index: 0, text, sequence_number: sequence++ });
+          write({ type: 'response.content_part.done', item_id: `msg_${id}`, output_index: 0, content_index: 0, part: { type: 'output_text', text, annotations: [] }, sequence_number: sequence++ });
+          if (item !== undefined) write({ type: 'response.output_item.done', output_index: 0, item, sequence_number: sequence++ });
+        }
+        for (const [index, streamed] of toolBlocks) {
+          const item = completed.output.find((entry) => entry.type === 'function_call' && entry.call_id === streamed.id);
+          if (item !== undefined) {
+            write({ type: 'response.function_call_arguments.done', item_id: item.id, output_index: index, arguments: item.arguments, sequence_number: sequence++ });
+            write({ type: 'response.output_item.done', output_index: index, item, sequence_number: sequence++ });
+          }
+        }
+        write({ type: completed.status === 'completed' ? 'response.completed' : 'response.incomplete', response: completed, sequence_number: sequence++ });
+      } else {
+        const message = createAnthropicMessage(value);
+        if (textBlockStarted) write({ type: 'content_block_stop', index: 0 }, 'content_block_stop');
+        for (const index of toolBlocks.keys()) write({ type: 'content_block_stop', index }, 'content_block_stop');
+        write({ type: 'message_delta', delta: { stop_reason: message.stop_reason, stop_sequence: message.stop_sequence }, usage: { output_tokens: message.usage.output_tokens } }, 'message_delta');
+        write({ type: 'message_stop' }, 'message_stop');
+      }
+      const trailers = Object.fromEntries(Object.entries(headers).filter(([, value]) => typeof value === 'string'));
+      if (Object.keys(trailers).length > 0) response.addTrailers?.(trailers);
+      response.end();
+    },
+    fail(error) {
+      if (!started) return false;
+      write({ type: 'error', error: { code: errorCode(error), message: 'Streaming execution failed before completion.' } }, protocol === 'anthropic' ? 'error' : undefined);
+      response.end();
+      return true;
+    },
+  };
+}
+
+function nativeAiStreamWriter({ response }) {
+  let started = false;
+  const write = (event, data) => {
+    if (!started) {
+      response.writeHead(200, {
+        'content-type': 'text/event-stream; charset=utf-8',
+        'cache-control': 'no-store, no-transform',
+        'x-accel-buffering': 'no',
+      });
+      response.flushHeaders?.();
+      started = true;
+    }
+    response.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+  };
+  return {
+    onEvent(event) { write(event.type, event); },
+    finish(value, _originalRequest, headers = {}) {
+      write('result.completed', value);
+      const trailers = Object.fromEntries(Object.entries(headers).filter(([, entry]) => typeof entry === 'string'));
+      if (Object.keys(trailers).length > 0) response.addTrailers?.(trailers);
+      response.end();
+    },
+    fail(error) {
+      if (!started) return false;
+      write('error', { type: 'error', error: { code: errorCode(error), message: 'Streaming execution failed before completion.' } });
+      response.end();
+      return true;
+    },
+  };
+}
+
 async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { allowEmpty = false } = {}) {
   const contentType = request.headers['content-type'];
   const declaredType = typeof contentType === 'string' ? contentType.split(';', 1)[0].trim().toLowerCase() : '';
@@ -227,6 +366,7 @@ export function createSearchServer({
   aiAdapterFactory,
   aiRuntimeBindings,
   aiReady,
+  aiOperationalHealth,
   aiFreeTier,
   aiArtifactAccess,
   aiMonitor,
@@ -412,7 +552,7 @@ export function createSearchServer({
     const observedAt = new Date(observedMs).toISOString();
     const [searchValue, aiValue, sandboxValue, rpcValue, predictionValue, cryptoValue] = await Promise.all([
       boundedHealth(() => typeof executor.health === 'function' ? executor.health(observedAt) : { status: 'healthy' }),
-      boundedHealth(async () => aiReady === undefined ? { status: 'unavailable' } : { status: await aiReady() ? 'healthy' : 'unavailable' }),
+      boundedHealth(async () => aiReady === undefined ? { status: 'unavailable' } : { status: await aiReady() ? 'healthy' : 'unavailable', routes: aiOperationalHealth?.() ?? [] }),
       boundedHealth(async () => sandboxGateway === undefined ? { status: 'unavailable' } : { status: await sandboxGateway.ready() ? 'healthy' : 'unavailable' }),
       boundedHealth(async () => {
         if (rpcRuntime === undefined) return { status: 'unavailable' };
@@ -608,6 +748,7 @@ export function createSearchServer({
         return;
       }
       let aiOperationId;
+      let compatibilityWriter;
       try {
         const observedAt = now();
         const suppliedKey = request.headers['idempotency-key'];
@@ -642,18 +783,9 @@ export function createSearchServer({
             || anthropicCompatibility
             || responsesCompatibility)
           && aiBody.stream === true;
+        const aiStreamRequested = normalized.input.kind === 'chat' && normalized.input.stream === true;
 
-        const executionNormalized =
-          compatibilityStreamRequested
-            && normalized.input?.kind === 'chat'
-            ? Object.freeze({
-                ...normalized,
-                input: Object.freeze({
-                  ...normalized.input,
-                  stream: false,
-                }),
-              })
-            : normalized;
+        const executionNormalized = normalized;
 
         const classificationId = identifier('op', `classify:${requestHash}`);
         const billingMode = aiPublicPricing.quote({
@@ -667,6 +799,9 @@ export function createSearchServer({
           const keyHeader = keyGenerated ? generatedIdempotencyKey() : suppliedKey;
           validateIdempotencyKey(keyHeader);
           aiOperationId = identifier('op', `${keyHeader}:${requestHash}`);
+          compatibilityWriter = compatibilityStreamRequested
+            ? compatibilityStreamWriter({ response, protocol: openAiCompatibility ? 'chat' : responsesCompatibility ? 'responses' : 'anthropic', operationId: aiOperationId, createdAt: observedAt, requestedModel: normalized.model })
+            : aiStreamRequested ? nativeAiStreamWriter({ response }) : undefined;
           const edgeSubject = request.headers['x-clervo-quota-subject'];
           if (edgeAuthorization !== undefined && (typeof edgeSubject !== 'string' || edgeSubject.length < 1 || edgeSubject.length > 200)) throw Object.assign(new Error('ai_quota_subject_required'), { status: 503 });
           const subject = typeof edgeSubject === 'string' && edgeSubject.length >= 1 && edgeSubject.length <= 200
@@ -681,12 +816,17 @@ export function createSearchServer({
             now: observedAt,
             deadlineAt: deadline.deadlineAt,
             signal: requestSignal,
+            ...(compatibilityWriter === undefined ? {} : { onEvent: (event) => compatibilityWriter.onEvent(event) }),
           });
           const responseHeaders = {
             ...free.headers,
             ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}),
           };
-          if (free.status === 200 && aiBody.stream === true) {
+          if (free.status === 200 && aiStreamRequested) {
+            if (compatibilityWriter !== undefined) {
+              compatibilityWriter.finish(free.body, aiBody, responseHeaders);
+              return;
+            }
             const streamBody = openAiCompatibility
               ? createOpenAiChatStream(free.body)
               : anthropicCompatibility
@@ -716,6 +856,9 @@ export function createSearchServer({
         if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
         validateIdempotencyKey(keyHeader);
         aiOperationId = identifier('op', `${keyHeader}:${requestHash}`);
+        compatibilityWriter = compatibilityStreamRequested
+          ? compatibilityStreamWriter({ response, protocol: openAiCompatibility ? 'chat' : responsesCompatibility ? 'responses' : 'anthropic', operationId: aiOperationId, createdAt: observedAt, requestedModel: normalized.model })
+          : aiStreamRequested ? nativeAiStreamWriter({ response }) : undefined;
         const paid = await x402AiProcessor.process({
           idempotencyKey: keyHeader,
           requestHash,
@@ -734,12 +877,17 @@ export function createSearchServer({
                 : undefined,
           deadlineAt: deadline.deadlineAt,
           signal: requestSignal,
+          ...(compatibilityWriter === undefined ? {} : { onEvent: (event) => compatibilityWriter.onEvent(event) }),
         });
         const responseHeaders = {
           ...paid.headers,
           ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}),
         };
-        if (paid.status === 200 && aiBody.stream === true) {
+        if (paid.status === 200 && aiStreamRequested) {
+          if (compatibilityWriter !== undefined) {
+            compatibilityWriter.finish(paid.body, aiBody, responseHeaders);
+            return;
+          }
           const streamBody = openAiCompatibility
             ? createOpenAiChatStream(paid.body)
             : anthropicCompatibility
@@ -763,11 +911,14 @@ export function createSearchServer({
                 : paid.body;
         send(response, paid.status, responseBody, responseHeaders);
       } catch (error) {
+        if (compatibilityWriter?.fail(error)) return;
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
         const title = status === 400 ? 'Invalid AI request' : status === 404 ? 'AI model not found' : status === 409 ? 'AI operation conflict' : status === 422 ? 'AI model unavailable' : 'AI execution unavailable';
-        const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : status === 404 ? 'The requested model ID is not present in the current Clervo catalog.' : status === 422 ? 'The requested model is known but is not currently sellable for this input kind.' : 'The AI operation failed closed without an additional customer charge.';
-        send(response, status, problem(status, code, title, detail, url.pathname, aiOperationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
+        const detail = code === 'ai_model_temporarily_unavailable' ? 'Model temporarily unavailable. Please choose another available model.' : status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : status === 404 ? 'The requested model ID is not present in the current Clervo catalog.' : status === 422 ? 'The requested model is known but is not currently sellable for this input kind.' : 'The AI operation failed closed without an additional customer charge.';
+        const body = problem(status, code, title, detail, url.pathname, aiOperationId);
+        if (Array.isArray(error?.availableAlternatives)) body.availableAlternatives = error.availableAlternatives;
+        send(response, status, body, status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
     }

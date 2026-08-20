@@ -88,7 +88,7 @@ async function verifyProjection() {
   assert.equal(await status('/v1/ai/execute'), 405, 'normalized execute path not projected');
   const catalog = await (await fetch('https://ai.clervo.dev/v1/catalog', { signal: AbortSignal.timeout(30_000) })).json();
   assert.deepEqual(catalog.clervo.inventory, { canonicalModels: 85, aliases: 4, callableIds: 89 });
-  assert.equal(catalog.data.filter(({ clervo }) => clervo.publicSellable === true).length, 88);
+  assert.equal(catalog.data.filter(({ clervo }) => clervo.publicSellable === true).length, 79);
 
   const freeRequest = {
     model: 'clervo/gemma-4-26b-a4b-it',
@@ -105,7 +105,7 @@ async function verifyProjection() {
   assert.equal(freeBody.fundingMode, 'free');
 
   const paidRequest = {
-    model: 'clervo/gpt-5.6-luna',
+    model: 'clervo/gpt-oss-120b',
     input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
     maximumOutputTokens: 16,
   };
@@ -116,7 +116,7 @@ async function verifyProjection() {
   const paidBody = await paid.json();
   assert.equal(paidBody.quote.maximumCharge.amountAtomic, '1000');
   assert.equal(paidBody.accepts[0].amount, '1000');
-  return { catalogIds: catalog.data.length, sellableIds: 88, freeReplay: true, paidChallengeAtomic: '1000' };
+  return { catalogIds: catalog.data.length, sellableIds: 79, freeReplay: true, paidChallengeAtomic: '1000' };
 }
 
 if (action === 'plan') {

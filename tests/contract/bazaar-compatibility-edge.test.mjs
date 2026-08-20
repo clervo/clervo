@@ -28,14 +28,14 @@ function request(pathname, body) {
   });
 }
 
-test('vendor model names resolve before the canonical AI catalog lookup', () => {
+test('exact vendor model names preserve identity before canonical catalog lookup', () => {
   assert.equal(
     normalizeOpenAiChatCompletionRequest({
       model: 'gpt-4o',
       messages: [{ role: 'user', content: 'hi' }],
       max_tokens: 5,
     }).model,
-    'clervo/gpt-5.6-luna',
+    'gpt-4o',
   );
 
   assert.equal(
@@ -44,7 +44,7 @@ test('vendor model names resolve before the canonical AI catalog lookup', () => 
       max_tokens: 5,
       messages: [{ role: 'user', content: 'hi' }],
     }).model,
-    'clervo/claude-sonnet-4-6',
+    'claude-3-5-sonnet-20241022',
   );
 
   assert.equal(
@@ -53,7 +53,7 @@ test('vendor model names resolve before the canonical AI catalog lookup', () => 
       input: 'hi',
       max_output_tokens: 5,
     }).model,
-    'clervo/gpt-5.6-luna',
+    'gpt-4o',
   );
 });
 
@@ -137,7 +137,7 @@ test('Bazaar-style compatibility probes are normalized before the origin sees th
     {
       pathname: '/v1/chat/completions',
       body: {
-        model: 'clervo/gpt-5.6-luna',
+        model: 'gpt-4o',
         messages: [{ role: 'user', content: 'hi' }],
         max_tokens: 5,
       },
@@ -145,7 +145,7 @@ test('Bazaar-style compatibility probes are normalized before the origin sees th
     {
       pathname: '/v1/messages',
       body: {
-        model: 'clervo/claude-sonnet-4-6',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 5,
         messages: [{ role: 'user', content: 'hi' }],
       },
@@ -153,7 +153,7 @@ test('Bazaar-style compatibility probes are normalized before the origin sees th
     {
       pathname: '/v1/responses',
       body: {
-        model: 'clervo/gpt-5.6-luna',
+        model: 'gpt-4o',
         input: 'hi',
         max_output_tokens: 5,
         store: false,
