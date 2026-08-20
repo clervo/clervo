@@ -63,30 +63,34 @@ function ensureServiceAccount() {
 }
 function bindRuntimeAccess() {
   const member = `serviceAccount:${policy.greenService.serviceAccount}`;
-  gcloud(['projects', 'add-iam-policy-binding', policy.project, '--member', member, '--role', 'roles/aiplatform.user', '--condition=None', '--quiet']);
+  gcloud(['projects', 'add-iam-policy-binding', policy.project, '--member', member, '--role', 'roles/aiplatform.user', '--condition=None', '--format=none', '--quiet']);
   for (const secret of policy.secretBindings) {
-    gcloud(['secrets', 'add-iam-policy-binding', secret, '--project', policy.project, '--member', member, '--role', 'roles/secretmanager.secretAccessor', '--condition=None', '--quiet']);
+    gcloud(['secrets', 'add-iam-policy-binding', secret, '--project', policy.project, '--member', member, '--role', 'roles/secretmanager.secretAccessor', '--condition=None', '--format=none', '--quiet']);
   }
 }
 function deploy(versions) {
   if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-ai-gateway@sha256:[a-f0-9]{64}$/u.test(image ?? '')) refuse('invalid_image');
   const mounts = [
-    `/run/secrets/builder-key=clervo-production-ai-api-key:${versions['clervo-production-ai-api-key']}`,
-    `/run/secrets/provider-groq-key=clervo-production-groq-api-key:${versions['clervo-production-groq-api-key']}`,
-    `/run/secrets/nvidia-key=clervo-production-ai-gateway-nvidia-api-key:${versions['clervo-production-ai-gateway-nvidia-api-key']}`,
-    `/run/secrets/provider-siliconflow-key=clervo-production-ai-gateway-siliconflow-api-key:${versions['clervo-production-ai-gateway-siliconflow-api-key']}`,
-    `/run/secrets/provider-mistral-key=clervo-production-ai-gateway-mistral-api-key:${versions['clervo-production-ai-gateway-mistral-api-key']}`,
-    `/run/secrets/provider-sambanova-key=clervo-production-ai-gateway-sambanova-api-key:${versions['clervo-production-ai-gateway-sambanova-api-key']}`,
-    `/run/secrets/provider-openrouter-key=clervo-production-ai-gateway-openrouter-api-key:${versions['clervo-production-ai-gateway-openrouter-api-key']}`,
-    `/run/secrets/provider-hcnsec-keys=clervo-production-ai-gateway-hcnsec-api-keys:${versions['clervo-production-ai-gateway-hcnsec-api-keys']}`,
+    `/secrets/builder/key=clervo-production-ai-api-key:${versions['clervo-production-ai-api-key']}`,
+    `/secrets/groq/key=clervo-production-groq-api-key:${versions['clervo-production-groq-api-key']}`,
+    `/secrets/nvidia/key=clervo-production-ai-gateway-nvidia-api-key:${versions['clervo-production-ai-gateway-nvidia-api-key']}`,
+    `/secrets/siliconflow/key=clervo-production-ai-gateway-siliconflow-api-key:${versions['clervo-production-ai-gateway-siliconflow-api-key']}`,
+    `/secrets/mistral/key=clervo-production-ai-gateway-mistral-api-key:${versions['clervo-production-ai-gateway-mistral-api-key']}`,
+    `/secrets/sambanova/key=clervo-production-ai-gateway-sambanova-api-key:${versions['clervo-production-ai-gateway-sambanova-api-key']}`,
+    `/secrets/openrouter/key=clervo-production-ai-gateway-openrouter-api-key:${versions['clervo-production-ai-gateway-openrouter-api-key']}`,
+    `/secrets/hcnsec/keys.json=clervo-production-ai-gateway-hcnsec-api-keys:${versions['clervo-production-ai-gateway-hcnsec-api-keys']}`,
   ];
   const environment = [
     `VERTEX_PROJECT_ID=${policy.project}`, 'PUBLIC_PROVIDER_NAMES=true', 'REQUESTS_PER_MINUTE=120',
+    'BUILDER_API_KEY_FILE=/secrets/builder/key', 'GROQ_API_KEY_FILE=/secrets/groq/key', 'NVIDIA_API_KEY_FILE=/secrets/nvidia/key',
+    'SILICONFLOW_API_KEY_FILE=/secrets/siliconflow/key', 'MISTRAL_API_KEY_FILE=/secrets/mistral/key',
+    'SAMBANOVA_API_KEY_FILE=/secrets/sambanova/key', 'OPENROUTER_API_KEY_FILE=/secrets/openrouter/key',
+    'HCNSEC_ACCOUNT_KEYS_FILE=/secrets/hcnsec/keys.json',
     'MAX_CONCURRENCY=8', 'MAX_BODY_BYTES=10485760', 'MAX_OUTPUT_TOKENS=32768', 'UPSTREAM_TIMEOUT_MS=600000',
   ];
   gcloud([
     'run', 'deploy', policy.greenService.name, '--project', policy.project, '--region', policy.region, '--image', image,
-    '--service-account', policy.greenService.serviceAccount, '--execution-environment', 'gen2', '--ingress', 'all', '--allow-unauthenticated',
+    '--service-account', policy.greenService.serviceAccount, '--execution-environment', 'gen2', '--ingress', 'all', '--no-allow-unauthenticated',
     '--cpu', policy.greenService.cpu, '--memory', policy.greenService.memory, '--concurrency', String(policy.greenService.concurrency),
     '--min-instances', String(policy.greenService.minimumInstances), '--max-instances', String(policy.greenService.maximumInstances),
     '--timeout', `${policy.greenService.timeoutSeconds}s`, '--cpu-throttling', '--no-session-affinity', '--port', '8080',
@@ -95,6 +99,11 @@ function deploy(versions) {
     '--liveness-probe', 'httpGet.path=/health,httpGet.port=8080,periodSeconds=30,timeoutSeconds=2,failureThreshold=3',
     '--labels', 'clervo-component=ai-gateway,clervo-phase=infra-rearch-1', '--quiet',
   ]);
+  // Cloud Run's platform IAM layer cannot carry the gateway's existing bearer
+  // credential because it owns Authorization. Disable only that redundant
+  // platform check; every application route except /health fails closed on the
+  // shared production gateway token.
+  gcloud(['run', 'services', 'update', policy.greenService.name, '--project', policy.project, '--region', policy.region, '--no-invoker-iam-check', '--quiet']);
 }
 
 const plan = {
