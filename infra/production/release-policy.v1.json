@@ -4,7 +4,8 @@
   "container": {
     "dockerfile": "Dockerfile",
     "buildBaseImage": "node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7",
-    "baseImage": "gcr.io/distroless/nodejs24-debian12:nonroot@sha256:14d42e2511532589a7c7e01a753667a74fcc96266e137e8125006b87b0c32d0a",
+    "baseImage": "gcr.io/distroless/static-debian13:nonroot@sha256:f7f8f729987ad0fdf6b05eeeae94b26e6a0f613bdf46feea7fc40f7bd72953e6",
+    "runtimeNodeImage": "node:24.18.1-alpine3.23@sha256:c2cc26d8f991c2db236ad51a61efee843c482372d6d22570787309d511694110",
     "user": "65532:65532",
     "readOnlyRootRequired": true,
     "noNewPrivilegesRequired": true,

@@ -24,7 +24,9 @@ COPY packages/mcp/package.json ./packages/mcp/package.json
 COPY packages/sdk-typescript/package.json ./packages/sdk-typescript/package.json
 RUN npm ci --omit=dev --omit=optional --ignore-scripts --no-audit --no-fund --workspaces=false
 
-FROM gcr.io/distroless/nodejs24-debian12:nonroot@sha256:14d42e2511532589a7c7e01a753667a74fcc96266e137e8125006b87b0c32d0a AS runtime
+FROM node:24.18.1-alpine3.23@sha256:c2cc26d8f991c2db236ad51a61efee843c482372d6d22570787309d511694110 AS runtime-node
+
+FROM gcr.io/distroless/static-debian13:nonroot@sha256:f7f8f729987ad0fdf6b05eeeae94b26e6a0f613bdf46feea7fc40f7bd72953e6 AS runtime
 
 LABEL org.opencontainers.image.title="Clervo API distribution candidate"
 LABEL org.opencontainers.image.source="https://github.com/clervo/clervo"
@@ -34,6 +36,9 @@ ENV NODE_ENV=production
 ENV PORT=8080
 WORKDIR /app
 
+COPY --chown=65532:65532 --from=runtime-node /usr/local/bin/node /nodejs/bin/node
+COPY --chown=65532:65532 --from=runtime-node /lib/ld-musl-x86_64.so.1 /lib/libc.musl-x86_64.so.1 /lib/
+COPY --chown=65532:65532 --from=runtime-node /usr/lib/libgcc_s.so.1 /usr/lib/libstdc++.so.6 /usr/lib/libstdc++.so.6.0.34 /usr/lib/
 COPY --chown=65532:65532 --from=build /app/package.json ./package.json
 COPY --chown=65532:65532 --from=runtime-dependencies /app/node_modules ./node_modules
 COPY --chown=65532:65532 --from=build /app/dist ./dist
@@ -47,4 +52,5 @@ EXPOSE 8080
 STOPSIGNAL SIGTERM
 HEALTHCHECK --interval=15s --timeout=3s --start-period=5s --retries=3 \
   CMD ["/nodejs/bin/node", "-e", "const response = await fetch('http://127.0.0.1:8080/v1/health', { signal: AbortSignal.timeout(2000) }); if (!response.ok) process.exit(1)"]
+ENTRYPOINT ["/nodejs/bin/node"]
 CMD ["./apps/api/src/staging-search-main.mjs"]
