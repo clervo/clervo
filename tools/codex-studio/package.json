@@ -10,6 +10,6 @@
     "@playwright/test": "1.62.1",
     "chrome-devtools-mcp": "1.6.0",
     "lighthouse": "13.4.1",
-    "svgo": "4.0.2"
+    "svgo": "4.1.0"
   }
 }
