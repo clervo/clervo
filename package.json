@@ -212,7 +212,7 @@
     "ajv-formats": "3.0.1",
     "opentype.js": "2.0.0",
     "playwright": "1.62.1",
-    "sharp": "0.35.3",
+    "sharp": "0.35.4",
     "svgo": "4.0.2",
     "typescript": "7.0.2"
   }
